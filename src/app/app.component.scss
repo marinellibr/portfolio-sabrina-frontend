@@ -83,6 +83,27 @@
     padding: 0 0.1rem;
   }
 
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0 0.75rem;
+    margin-left: 0.9rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+
+    &:hover { background: var(--border); }
+  }
+
   .theme-toggle {
     display: flex;
     align-items: center;

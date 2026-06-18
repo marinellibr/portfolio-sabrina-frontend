@@ -5,11 +5,16 @@
       <span class="logo-name">Sabrina<br>Cardoso</span>
     </div>
     <nav class="nav">
-      <a href="#" class="nav-link">Projetos</a>
+      <a href="#" class="nav-link">{{ 'NAV.PROJECTS' | translate }}</a>
       <span class="nav-sep">+</span>
-      <a href="#" class="nav-link">Sobre mim</a>
+      <a href="#" class="nav-link">{{ 'NAV.ABOUT' | translate }}</a>
       <span class="nav-sep">+</span>
-      <a href="#" class="nav-link">Contato</a>
+      <a href="#" class="nav-link">{{ 'NAV.CONTACT' | translate }}</a>
+
+      <button class="lang-toggle" (click)="lang.toggle()" aria-label="Toggle language">
+        {{ lang.current === 'pt' ? 'EN' : 'PT' }}
+      </button>
+
       <button class="theme-toggle" (click)="toggleDarkMode()" [attr.aria-label]="isDarkMode ? 'Ativar modo claro' : 'Ativar modo escuro'">
         @if (!isDarkMode) {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -39,6 +44,6 @@
   <div class="deco deco-3" aria-hidden="true">✳</div>
 
   <footer class="footer">
-    <p>© 2025 Sabrina Cardoso · Todos os direitos reservados</p>
+    <p>{{ 'FOOTER.COPYRIGHT' | translate }}</p>
   </footer>
 </div>

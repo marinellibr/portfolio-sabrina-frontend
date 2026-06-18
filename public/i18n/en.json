@@ -1,0 +1,18 @@
+{
+  "NAV": {
+    "PROJECTS": "Projects",
+    "ABOUT": "About me",
+    "CONTACT": "Contact"
+  },
+  "HOME": {
+    "BADGE": "under maintenance",
+    "TITLE": "So glad you\nstopped by!",
+    "SUBTITLE": "I craft digital experiences with care, clarity and a focus on real people.",
+    "DESCRIPTION": "My portfolio is being lovingly prepared. Soon you'll see my projects and stories here.",
+    "CTA_CONTACT": "Get in touch",
+    "CTA_LINKEDIN": "LinkedIn →"
+  },
+  "FOOTER": {
+    "COPYRIGHT": "© 2025 Sabrina Cardoso · All rights reserved"
+  }
+}

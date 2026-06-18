@@ -1,12 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { trackSession, trackPageLoad, trackClick } from 'data-analytics-lib';
 import { PostService } from './services/post.service';
+import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TranslatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -17,8 +19,11 @@ export class AppComponent implements OnInit {
   private readonly sessionID = 'sess-' + Math.random().toString(36).substring(2, 11);
 
   private readonly postService = inject(PostService);
+  readonly lang = inject(LanguageService);
 
   async ngOnInit() {
+    this.lang.init();
+
     const startTime = Date.now();
 
     await trackSession({
