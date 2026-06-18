@@ -10,3 +10,9 @@ export interface Post {
   updatedAt: string;
   __v: number;
 }
+
+export interface PostSummary {
+  _id: string;
+  title: string;
+  images?: string[];
+}
