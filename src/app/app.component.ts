@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { trackSession, trackPageLoad } from 'data-analytics-lib';
+import { trackSession, trackPageLoad, trackClick } from 'data-analytics-lib';
 import { PostService } from './services/post.service';
 
 @Component({
@@ -53,5 +53,16 @@ export class AppComponent implements OnInit {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
+    this.trackButtonClick('theme-toggle');
+  }
+
+  // Rastreia o clique em um botão usando a data-analytics-lib
+  trackButtonClick(element: string) {
+    trackClick({
+      sessionID: this.sessionID,
+      appID: this.appID,
+      location: window.location.pathname,
+      element
+    });
   }
 }
