@@ -15,4 +15,8 @@ export class PostService {
   getPostsSummary(): Observable<PostSummary[]> {
     return this.http.get<PostSummary[]>(`${this.baseUrl}/summary`);
   }
+
+  getPostById(id: string): Observable<Post> {
+    return this.http.get<Post>(`${this.baseUrl}/${id}`);
+  }
 }
