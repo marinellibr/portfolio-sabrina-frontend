@@ -1,0 +1,66 @@
+.header {
+  width: 100vw;
+  height: 200px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  background-color: #f7f0e9;
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    width: 376px;
+    height: 130px;
+    margin-top: 42px;
+    margin-left: 53px;
+  }
+
+  .header-links {
+    margin-top: 92px;
+    margin-right: 226px;
+
+    display: flex;
+    gap: 42px;
+    align-items: center;
+
+    height: 30px;
+    font-size: 24px;
+
+    img {
+      margin: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    a {
+      color: #7c3e00;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+
+      &:hover,
+      &.active {
+        color: #e42312;
+      }
+
+      &.nav-projects { min-width: 4.5em; }
+      &.nav-about    { min-width: 5.5em; }
+      &.nav-contact  { min-width: 4em;   }
+    }
+
+    .language {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      app-switch {
+        display: flex;
+      }
+    }
+  }
+}

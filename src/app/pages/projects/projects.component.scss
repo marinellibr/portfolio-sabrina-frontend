@@ -1,0 +1,17 @@
+.container {
+  padding-inline: 120px;
+  h1 {
+    font-family: "Gaegu", cursive;
+    color: #7c3e00;
+    margin-top: 52px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}

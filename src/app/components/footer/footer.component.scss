@@ -1,0 +1,25 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 145px;
+  background-color: #f7f0e9;
+  display: flex;
+  justify-content: center;
+
+  p {
+    margin-top: 70px;
+    margin-bottom: 49px;
+    font-size: 20px;
+    color: #7c3e00;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

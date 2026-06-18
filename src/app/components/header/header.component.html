@@ -1,0 +1,29 @@
+<div class="header">
+  <img
+    src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/header-logo.svg"
+    alt="building"
+  />
+
+  <section class="header-links">
+    <a class="nav-projects" routerLink="/projects" routerLinkActive="active">{{ 'NAV.PROJECTS' | translate }}</a>
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
+    />
+    <a class="nav-about" routerLink="/about" routerLinkActive="active">{{ 'NAV.ABOUT' | translate }}</a>
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
+    />
+    <a class="nav-contact" routerLink="/contact" routerLinkActive="active">{{ 'NAV.CONTACT' | translate }}</a>
+    <div class="language">
+      <img
+        [src]="
+          lang
+            ? 'https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/usa.svg'
+            : 'https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/brasil.svg'
+        "
+        alt=""
+      />
+      <app-switch [(ngModel)]="lang" />
+    </div>
+  </section>
+</div>
