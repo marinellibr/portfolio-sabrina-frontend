@@ -44,11 +44,6 @@ export class AppComponent implements OnInit {
       error: (err) => console.error("Erro ao buscar posts:", err),
     });
 
-    this.postService.getPostsSummary().subscribe({
-      next: (summary) => console.log('Posts summary:', summary),
-      error: (err) => console.error('Erro ao buscar posts summary:', err)
-    });
-
     const response = await trackPageLoad({
       sessionID: this.sessionID,
       appID: this.appID,
