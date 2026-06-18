@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { TranslatePipe } from "@ngx-translate/core";
 import { trackSession, trackPageLoad, trackClick } from "data-analytics-lib";
 import { PostService } from "./services/post.service";
 import { LanguageService } from "./services/language.service";
@@ -10,7 +9,6 @@ import { FooterComponent } from "./components/footer/footer.component";
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, TranslatePipe, HeaderComponent, FooterComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
