@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { trackSession, trackPageLoad, trackClick } from 'data-analytics-lib';
 import { PostService } from './services/post.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -20,7 +21,6 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     const startTime = Date.now();
 
-    // Inicializa a sessão de analytics
     await trackSession({
       sessionID: this.sessionID,
       appID: this.appID,
@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
       error: (err) => console.error('Erro ao buscar posts:', err)
     });
 
-    // Rastreia o screen view (page load) da página atual
     const response = await trackPageLoad({
       sessionID: this.sessionID,
       appID: this.appID,
@@ -56,7 +55,6 @@ export class AppComponent implements OnInit {
     this.trackButtonClick('theme-toggle');
   }
 
-  // Rastreia o clique em um botão usando a data-analytics-lib
   trackButtonClick(element: string) {
     trackClick({
       sessionID: this.sessionID,
