@@ -1,5 +1,11 @@
 import { Injectable } from "@angular/core";
-import { trackSession, trackPageLoad, trackClick } from "data-analytics-lib";
+import {
+  trackSession,
+  trackPageLoad,
+  trackClick,
+  trackHttpCall,
+  HttpMethod,
+} from "data-analytics-lib";
 
 @Injectable({ providedIn: "root" })
 export class AnalyticsService {
@@ -52,6 +58,23 @@ export class AnalyticsService {
       appID: this.appID,
       location: window.location.pathname,
       element,
+    });
+  }
+
+  // Rastreia o tempo de resposta (duração) de uma chamada HTTP
+  trackHttpCall(
+    endpoint: string,
+    method: string,
+    status: number,
+    duration: number,
+  ) {
+    trackHttpCall({
+      sessionID: this.sessionID,
+      appID: this.appID,
+      endpoint,
+      method: method.toUpperCase() as HttpMethod,
+      status,
+      duration,
     });
   }
 }
