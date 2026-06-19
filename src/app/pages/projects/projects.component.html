@@ -13,7 +13,7 @@
 
   <div class="gallery">
     <div class="card" *ngFor="let project of projects; let i = index">
-      <a [href]="project.link" target="_blank">
+      <a [routerLink]="['/project', project._id]" (click)="onProjectClick(project)">
         <img [src]="getCurrentImage(project, i)" />
         <h2>{{ project.title }}</h2>
       </a>

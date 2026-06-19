@@ -1,16 +1,19 @@
 import { Component, inject, OnInit, OnDestroy } from "@angular/core";
+import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import { PostService } from "../../services/post.service";
+import { AnalyticsService } from "../../services/analytics.service";
 import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-projects",
-  imports: [TranslatePipe, CommonModule],
+  imports: [TranslatePipe, CommonModule, RouterLink],
   templateUrl: "./projects.component.html",
   styleUrl: "./projects.component.scss",
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
   private readonly postService = inject(PostService);
+  private readonly analytics = inject(AnalyticsService);
   projects: any[] = [];
   private imageIndices: Map<number, number> = new Map();
   private intervalId: any;
@@ -52,5 +55,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   getCurrentImage(project: any, projectIndex: number): string {
     const imageIndex = this.imageIndices.get(projectIndex) || 0;
     return project.images[imageIndex] || project.images[0];
+  }
+
+  onProjectClick(project: any) {
+    this.analytics.trackClick(`gallery-item-${project._id}`);
   }
 }
