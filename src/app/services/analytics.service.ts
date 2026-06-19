@@ -16,14 +16,15 @@ export class AnalyticsService {
 
   private lastLocation: string | null = null;
 
-  // Rota atual e momento em que o usuário entrou nela
+  // Tela atual e momento em que o usuário entrou nela
   private routeLocation: string | null = null;
   private routeEnterTime = Date.now();
 
   async initSession() {
-    // Garante o registro do tempo da última rota ao fechar/ocultar a aba
+    // Registra o tempo da tela atual quando a aba é fechada/recarregada
+    // sem troca de rota (pagehide não dispara em troca de aba)
     if (typeof window !== "undefined") {
-      window.addEventListener("pagehide", () => this.flushRouteTime());
+      window.addEventListener("pagehide", () => this.flushScreenTime());
     }
 
     await this.log(
@@ -41,33 +42,23 @@ export class AnalyticsService {
     );
   }
 
-  async trackScreenView(location: string) {
+  // Marca a entrada numa tela: fecha o tempo da tela anterior e reinicia
+  // a contagem. Não envia evento na entrada — só ao sair (troca de rota).
+  trackRoute(location: string) {
     // Evita disparo duplicado para a mesma página (ex.: load inicial)
     if (location === this.lastLocation) {
       return;
     }
     this.lastLocation = location;
 
-    // Fecha o tempo da rota anterior antes de iniciar a nova
-    this.flushRouteTime();
+    this.flushScreenTime();
     this.routeLocation = location;
     this.routeEnterTime = Date.now();
-
-    await this.log(
-      "screen-view",
-      location,
-      trackPageLoad({
-        sessionID: this.sessionID,
-        appID: this.appID,
-        location,
-        timeOnPage: 0, // entrada na rota; o tempo gasto vai no evento route-time
-      }),
-    );
   }
 
-  // Guarda o tempo que o usuário passou na rota atual até a ação que a mudou
-  // (ou até a aba ser fechada). Emitido como pageview com timeOnPage real.
-  flushRouteTime() {
+  // Guarda o tempo que o usuário passou na tela atual (timeOnPage) até a
+  // ação que muda a rota — ou até a aba ser fechada/recarregada.
+  flushScreenTime() {
     if (this.routeLocation === null) {
       return;
     }
@@ -76,7 +67,7 @@ export class AnalyticsService {
     this.routeLocation = null;
 
     this.log(
-      "route-time",
+      "screen-time",
       `${location} (${timeOnPage}ms)`,
       trackPageLoad({
         sessionID: this.sessionID,

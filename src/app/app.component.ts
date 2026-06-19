@@ -25,11 +25,12 @@ export class AppComponent implements OnInit {
 
     await this.analytics.initSession();
 
-    // Screen view inicial + a cada navegação (cobre todas as páginas)
-    this.analytics.trackScreenView(this.router.url);
+    // Inicia a contagem de tempo na rota inicial e a cada navegação;
+    // o tempo gasto na tela é enviado ao sair dela (cobre todas as páginas)
+    this.analytics.trackRoute(this.router.url);
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-      .subscribe((e) => this.analytics.trackScreenView(e.urlAfterRedirects));
+      .subscribe((e) => this.analytics.trackRoute(e.urlAfterRedirects));
   }
 
   toggleDarkMode() {
