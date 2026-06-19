@@ -4,19 +4,19 @@
     "ABOUT": "Sobre mim",
     "CONTACT": "Contato"
   },
-  "HOME": {
+  "PROJECTS": {
     "BADGE": "em manutenção",
-    "TITLE": "Que bom te\nver por aqui!",
+    "TITLE": "Que bom te ver por aqui!",
     "SUBTITLE": "Crio experiências digitais com cuidado, clareza e foco em pessoas reais.",
     "DESCRIPTION": "Meu portfólio está sendo preparado com carinho. Em breve você verá meus projetos e histórias por aqui.",
     "CTA_CONTACT": "Entre em contato",
     "CTA_LINKEDIN": "LinkedIn →"
   },
   "BUILDING": {
-    "TITLE": "Que bom que você está aqui, mas o site ainda não está pronto!",
-    "SUBTITLE": "Mas por enquanto você pode conferir meu trabalho em:"
+    "TITLE": "Que bom te ver, mas ainda estamos ajustando algumas coisas!",
+    "SUBTITLE": "Por enquanto você pode conferir meu trabalho em:"
   },
   "FOOTER": {
-    "COPYRIGHT": "© 2025 Sabrina Cardoso · Todos os direitos reservados"
+    "COPYRIGHT": "© 2026 Sabrina Cardoso · Todos os direitos reservados"
   }
 }

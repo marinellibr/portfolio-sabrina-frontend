@@ -14,7 +14,7 @@ export class BuildingComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
 
   ngOnInit() {
-    this.analytics.trackScreenView("/building");
+    this.analytics.trackRoute("/building");
   }
 
   onBehanceClick() {
