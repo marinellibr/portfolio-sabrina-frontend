@@ -1,52 +1,29 @@
-.header {
+/* ---------- Desktop header (exactly as commit b095572) ---------- */
+.header.desktop {
   width: 100vw;
+  height: 200px;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
   background-color: #f7f0e9;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    img {
-      width: 376px;
-      height: 130px;
-      margin-top: 42px;
-      margin-left: 53px;
-    }
-
-    .language {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      margin-top: 42px;
-      margin-right: 53px;
-
-      img {
-        width: 24px;
-        height: 24px;
-        margin: 0;
-      }
-
-      app-switch {
-        display: flex;
-      }
-    }
+  img {
+    width: 376px;
+    height: 130px;
+    margin-top: 42px;
+    margin-left: 53px;
   }
 
   .header-links {
-    margin-top: 24px;
-    margin-bottom: 24px;
+    margin-top: 92px;
+    margin-right: 226px;
 
     display: flex;
-    justify-content: center;
     gap: 42px;
     align-items: center;
 
+    height: 30px;
     font-size: 24px;
 
     img {
@@ -71,49 +48,112 @@
       &.nav-about    { min-width: 5.5em; }
       &.nav-contact  { min-width: 4em;   }
     }
+
+    .language {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      app-switch {
+        display: flex;
+      }
+    }
   }
 }
 
-@media (max-width: 768px) {
-  .header {
-    .header-top {
-      flex-direction: column;
+/* ---------- Mobile header ---------- */
+.header.mobile {
+  width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  background-color: #f7f0e9;
+  display: none;
+  flex-direction: column;
+
+  .header-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+
+    img {
+      width: auto;
+      max-width: 80%;
+      height: auto;
+      margin: 32px 0 0 0;
+    }
+
+    .language {
+      display: flex;
       align-items: center;
-      gap: 24px;
+      justify-content: center;
+      gap: 12px;
 
       img {
-        width: auto;
-        max-width: 80%;
-        height: auto;
-        margin: 32px 0 0 0;
-      }
-
-      .language {
+        width: 24px;
+        height: 24px;
         margin: 0;
-        justify-content: center;
+      }
+
+      app-switch {
+        display: flex;
       }
     }
+  }
 
-    .header-links {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      padding-inline: 16px;
-      font-size: 18px;
+  .header-links {
+    margin-top: 24px;
+    margin-bottom: 24px;
 
-      a {
-        &.nav-projects,
-        &.nav-about,
-        &.nav-contact {
-          min-width: auto;
-        }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding-inline: 16px;
+    font-size: 18px;
+
+    img {
+      margin: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    a {
+      color: #7c3e00;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+
+      &:hover,
+      &.active {
+        color: #e42312;
       }
     }
+  }
+}
+
+/* ---------- Breakpoint switch ---------- */
+@media (max-width: 768px) {
+  .header.desktop {
+    display: none;
+  }
+
+  .header.mobile {
+    display: flex;
   }
 }
 
 @media (max-width: 480px) {
-  .header {
+  .header.mobile {
     .header-top img {
       max-width: 90%;
       margin-top: 24px;
