@@ -14,10 +14,18 @@ export class AnalyticsService {
   private readonly sessionID =
     "sess-" + Math.random().toString(36).substring(2, 11);
 
-  private pageEnterTime = Date.now();
   private lastLocation: string | null = null;
 
+  // Rota atual e momento em que o usuário entrou nela
+  private routeLocation: string | null = null;
+  private routeEnterTime = Date.now();
+
   async initSession() {
+    // Garante o registro do tempo da última rota ao fechar/ocultar a aba
+    if (typeof window !== "undefined") {
+      window.addEventListener("pagehide", () => this.flushRouteTime());
+    }
+
     await this.log(
       "session",
       this.sessionID,
@@ -40,12 +48,36 @@ export class AnalyticsService {
     }
     this.lastLocation = location;
 
-    const timeOnPage = Date.now() - this.pageEnterTime;
-    this.pageEnterTime = Date.now();
+    // Fecha o tempo da rota anterior antes de iniciar a nova
+    this.flushRouteTime();
+    this.routeLocation = location;
+    this.routeEnterTime = Date.now();
 
     await this.log(
       "screen-view",
       location,
+      trackPageLoad({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        location,
+        timeOnPage: 0, // entrada na rota; o tempo gasto vai no evento route-time
+      }),
+    );
+  }
+
+  // Guarda o tempo que o usuário passou na rota atual até a ação que a mudou
+  // (ou até a aba ser fechada). Emitido como pageview com timeOnPage real.
+  flushRouteTime() {
+    if (this.routeLocation === null) {
+      return;
+    }
+    const location = this.routeLocation;
+    const timeOnPage = Date.now() - this.routeEnterTime;
+    this.routeLocation = null;
+
+    this.log(
+      "route-time",
+      `${location} (${timeOnPage}ms)`,
       trackPageLoad({
         sessionID: this.sessionID,
         appID: this.appID,
