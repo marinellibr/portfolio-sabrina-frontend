@@ -1,5 +1,12 @@
 import { Injectable } from "@angular/core";
-import { trackSession, trackPageLoad, trackClick } from "data-analytics-lib";
+import {
+  trackSession,
+  trackPageLoad,
+  trackClick,
+  trackHttpCall,
+  HttpMethod,
+  AnalyticsResponse,
+} from "data-analytics-lib";
 
 @Injectable({ providedIn: "root" })
 export class AnalyticsService {
@@ -7,51 +14,119 @@ export class AnalyticsService {
   private readonly sessionID =
     "sess-" + Math.random().toString(36).substring(2, 11);
 
-  private pageEnterTime = Date.now();
   private lastLocation: string | null = null;
 
+  // Tela atual e momento em que o usuário entrou nela
+  private routeLocation: string | null = null;
+  private routeEnterTime = Date.now();
+
   async initSession() {
-    await trackSession({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      context: {
-        device: "desktop",
-        browser: navigator.userAgent,
-        referrer: document.referrer || "direct",
-      },
-    });
+    // Registra o tempo da tela atual quando a aba é fechada/recarregada
+    // sem troca de rota (pagehide não dispara em troca de aba)
+    if (typeof window !== "undefined") {
+      window.addEventListener("pagehide", () => this.flushScreenTime());
+    }
+
+    await this.log(
+      "session",
+      this.sessionID,
+      trackSession({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        context: {
+          device: "desktop",
+          browser: navigator.userAgent,
+          referrer: document.referrer || "direct",
+        },
+      }),
+    );
   }
 
-  async trackScreenView(location: string) {
+  // Marca a entrada numa tela: fecha o tempo da tela anterior e reinicia
+  // a contagem. Não envia evento na entrada — só ao sair (troca de rota).
+  trackRoute(location: string) {
     // Evita disparo duplicado para a mesma página (ex.: load inicial)
     if (location === this.lastLocation) {
       return;
     }
     this.lastLocation = location;
 
-    const timeOnPage = Date.now() - this.pageEnterTime;
-    this.pageEnterTime = Date.now();
+    this.flushScreenTime();
+    this.routeLocation = location;
+    this.routeEnterTime = Date.now();
+  }
 
-    const response = await trackPageLoad({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      location,
-      timeOnPage,
-    });
-
-    if (response.success) {
-      console.log("✓ Screen view rastreada:", location);
-    } else {
-      console.error("✗ Erro ao rastrear screen view:", response.error);
+  // Guarda o tempo que o usuário passou na tela atual (timeOnPage) até a
+  // ação que muda a rota — ou até a aba ser fechada/recarregada.
+  flushScreenTime() {
+    if (this.routeLocation === null) {
+      return;
     }
+    const location = this.routeLocation;
+    const timeOnPage = Date.now() - this.routeEnterTime;
+    this.routeLocation = null;
+
+    this.log(
+      "screen-time",
+      `${location} (${timeOnPage}ms)`,
+      trackPageLoad({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        location,
+        timeOnPage,
+      }),
+    );
   }
 
   trackClick(element: string) {
-    trackClick({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      location: window.location.pathname,
+    this.log(
+      "click",
       element,
-    });
+      trackClick({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        location: window.location.pathname,
+        element,
+      }),
+    );
+  }
+
+  // Rastreia o tempo de resposta (duração) de uma chamada HTTP
+  trackHttpCall(
+    endpoint: string,
+    method: string,
+    status: number,
+    duration: number,
+  ) {
+    this.log(
+      "http-call",
+      `${method.toUpperCase()} ${endpoint} (${status}, ${duration}ms)`,
+      trackHttpCall({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        endpoint,
+        method: method.toUpperCase() as HttpMethod,
+        status,
+        duration,
+      }),
+    );
+  }
+
+  // Loga cada evento de analytics no formato [AÇÃO]: valores
+  private async log(
+    action: string,
+    value: string,
+    request: Promise<AnalyticsResponse>,
+  ): Promise<void> {
+    const tag = `[${action.toUpperCase()}]`;
+    console.log(`${tag}: ${value}`);
+    try {
+      const response = await request;
+      if (!response.success) {
+        console.error(`${tag} erro: ${response.error?.message ?? "falhou"}`);
+      }
+    } catch (err) {
+      console.error(`${tag} erro: ${err instanceof Error ? err.message : err}`);
+    }
   }
 }
