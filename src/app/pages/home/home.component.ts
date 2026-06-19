@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-home',
   standalone: true,
   imports: [TranslatePipe],
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {}
