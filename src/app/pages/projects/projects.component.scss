@@ -29,15 +29,17 @@
     .card {
       a {
         text-decoration: none;
-        color: #7c3e00;
-        font-family: "Inter", sans-serif;
-        font-size: 14px;
-        margin-top: 12px;
+        h2 {
+          color: #7c3e00;
+          font-family: "Inter", sans-serif;
+          font-size: 14px;
+          margin-top: 12px;
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
       }
 
       img {
@@ -46,9 +48,5 @@
         border-radius: 42px;
       }
     }
-  }
-
-  .spacing {
-    height: 100px;
   }
 }
