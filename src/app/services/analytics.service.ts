@@ -5,6 +5,7 @@ import {
   trackClick,
   trackHttpCall,
   HttpMethod,
+  AnalyticsResponse,
 } from "data-analytics-lib";
 
 @Injectable({ providedIn: "root" })
@@ -17,15 +18,19 @@ export class AnalyticsService {
   private lastLocation: string | null = null;
 
   async initSession() {
-    await trackSession({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      context: {
-        device: "desktop",
-        browser: navigator.userAgent,
-        referrer: document.referrer || "direct",
-      },
-    });
+    await this.log(
+      "session",
+      this.sessionID,
+      trackSession({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        context: {
+          device: "desktop",
+          browser: navigator.userAgent,
+          referrer: document.referrer || "direct",
+        },
+      }),
+    );
   }
 
   async trackScreenView(location: string) {
@@ -38,27 +43,29 @@ export class AnalyticsService {
     const timeOnPage = Date.now() - this.pageEnterTime;
     this.pageEnterTime = Date.now();
 
-    const response = await trackPageLoad({
-      sessionID: this.sessionID,
-      appID: this.appID,
+    await this.log(
+      "screen-view",
       location,
-      timeOnPage,
-    });
-
-    if (response.success) {
-      console.log("✓ Screen view rastreada:", location);
-    } else {
-      console.error("✗ Erro ao rastrear screen view:", response.error);
-    }
+      trackPageLoad({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        location,
+        timeOnPage,
+      }),
+    );
   }
 
   trackClick(element: string) {
-    trackClick({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      location: window.location.pathname,
+    this.log(
+      "click",
       element,
-    });
+      trackClick({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        location: window.location.pathname,
+        element,
+      }),
+    );
   }
 
   // Rastreia o tempo de resposta (duração) de uma chamada HTTP
@@ -68,13 +75,36 @@ export class AnalyticsService {
     status: number,
     duration: number,
   ) {
-    trackHttpCall({
-      sessionID: this.sessionID,
-      appID: this.appID,
-      endpoint,
-      method: method.toUpperCase() as HttpMethod,
-      status,
-      duration,
-    });
+    this.log(
+      "http-call",
+      `${method.toUpperCase()} ${endpoint} (status ${status}, ${duration}ms)`,
+      trackHttpCall({
+        sessionID: this.sessionID,
+        appID: this.appID,
+        endpoint,
+        method: method.toUpperCase() as HttpMethod,
+        status,
+        duration,
+      }),
+    );
+  }
+
+  // Loga o envio e o resultado de cada evento de analytics
+  private async log(
+    event: string,
+    detail: string,
+    request: Promise<AnalyticsResponse>,
+  ): Promise<void> {
+    console.log(`[analytics] → enviando ${event}:`, detail);
+    try {
+      const response = await request;
+      if (response.success) {
+        console.log(`[analytics] ✓ ${event} enviado:`, detail, response.data);
+      } else {
+        console.error(`[analytics] ✗ ${event} falhou:`, detail, response.error);
+      }
+    } catch (err) {
+      console.error(`[analytics] ✗ ${event} erro inesperado:`, detail, err);
+    }
   }
 }
