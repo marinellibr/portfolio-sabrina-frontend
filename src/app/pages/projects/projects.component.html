@@ -1,11 +1,24 @@
 <div class="container">
-  <h1>
-    {{ 'PROJECTS.TITLE' | translate }}
-    <img
-      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/smile.svg"
-      alt="Smiley face"
-    />
-  </h1>
+  <div class="title">
+    <h1>
+      {{ "PROJECTS.TITLE" | translate }}
+      <img
+        src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/smile.svg"
+        alt="Smiley face"
+      />
+    </h1>
 
-  <p>{{ 'PROJECTS.SUBTITLE' | translate }}</p>
+    <p>{{ "PROJECTS.SUBTITLE" | translate }}</p>
+  </div>
+
+  <div class="gallery">
+    <div class="card" *ngFor="let project of projects; let i = index">
+      <a [href]="project.link" target="_blank">
+        <img [src]="getCurrentImage(project, i)" />
+        <h2>{{ project.title }}</h2>
+      </a>
+    </div>
+  </div>
+
+  <div class="spacing"></div>
 </div>
