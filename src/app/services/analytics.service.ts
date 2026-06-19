@@ -77,7 +77,7 @@ export class AnalyticsService {
   ) {
     this.log(
       "http-call",
-      `${method.toUpperCase()} ${endpoint} (status ${status}, ${duration}ms)`,
+      `${method.toUpperCase()} ${endpoint} (${status}, ${duration}ms)`,
       trackHttpCall({
         sessionID: this.sessionID,
         appID: this.appID,
@@ -89,22 +89,21 @@ export class AnalyticsService {
     );
   }
 
-  // Loga o envio e o resultado de cada evento de analytics
+  // Loga cada evento de analytics no formato [AÇÃO]: valores
   private async log(
-    event: string,
-    detail: string,
+    action: string,
+    value: string,
     request: Promise<AnalyticsResponse>,
   ): Promise<void> {
-    console.log(`[analytics] → enviando ${event}:`, detail);
+    const tag = `[${action.toUpperCase()}]`;
+    console.log(`${tag}: ${value}`);
     try {
       const response = await request;
-      if (response.success) {
-        console.log(`[analytics] ✓ ${event} enviado:`, detail, response.data);
-      } else {
-        console.error(`[analytics] ✗ ${event} falhou:`, detail, response.error);
+      if (!response.success) {
+        console.error(`${tag} erro: ${response.error?.message ?? "falhou"}`);
       }
     } catch (err) {
-      console.error(`[analytics] ✗ ${event} erro inesperado:`, detail, err);
+      console.error(`${tag} erro: ${err instanceof Error ? err.message : err}`);
     }
   }
 }
