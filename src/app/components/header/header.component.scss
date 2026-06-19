@@ -1,5 +1,7 @@
 .header {
   width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
   background-color: #f7f0e9;
@@ -70,6 +72,58 @@
       &.nav-projects { min-width: 4.5em; }
       &.nav-about    { min-width: 5.5em; }
       &.nav-contact  { min-width: 4em;   }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    .header-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+
+      img {
+        width: auto;
+        max-width: 80%;
+        height: auto;
+        margin: 32px 0 0 0;
+      }
+
+      .language {
+        margin: 0;
+        justify-content: center;
+      }
+    }
+
+    .header-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding-inline: 16px;
+      font-size: 18px;
+
+      a {
+        &.nav-projects,
+        &.nav-about,
+        &.nav-contact {
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    .header-top img {
+      max-width: 90%;
+      margin-top: 24px;
+    }
+
+    .header-links {
+      gap: 12px;
+      font-size: 16px;
     }
   }
 }
