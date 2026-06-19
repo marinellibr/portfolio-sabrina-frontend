@@ -5,15 +5,15 @@
   />
 
   <section class="header-links">
-    <a class="nav-projects" routerLink="/projects" routerLinkActive="active">{{ 'NAV.PROJECTS' | translate }}</a>
+    <a class="nav-projects" [routerLink]="isHome ? null : '/projects'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.PROJECTS' | translate }}</a>
     <img
       src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
     />
-    <a class="nav-about" routerLink="/about" routerLinkActive="active">{{ 'NAV.ABOUT' | translate }}</a>
+    <a class="nav-about" [routerLink]="isHome ? null : '/about'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.ABOUT' | translate }}</a>
     <img
       src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
     />
-    <a class="nav-contact" routerLink="/contact" routerLinkActive="active">{{ 'NAV.CONTACT' | translate }}</a>
+    <a class="nav-contact" [routerLink]="isHome ? null : '/contact'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.CONTACT' | translate }}</a>
     <div class="language">
       <img
         [src]="
