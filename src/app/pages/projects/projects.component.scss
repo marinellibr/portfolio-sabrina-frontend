@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  flex: 1;
+}
+.container {
+  padding-inline: 120px;
+  h1 {
+    font-family: "Gaegu", cursive;
+    color: #7c3e00;
+    margin-top: 52px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .gallery {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 90px;
+    margin-top: 52px;
+    margin-bottom: 66px;
+    .card {
+      a {
+        text-decoration: none;
+        h2 {
+          color: #7c3e00;
+          font-family: "Inter", sans-serif;
+          font-size: 14px;
+          margin-top: 12px;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+      }
+
+      img {
+        width: 333px;
+        height: 333px;
+        border-radius: 42px;
+      }
+    }
+  }
+}

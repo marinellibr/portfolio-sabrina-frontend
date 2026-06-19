@@ -4,15 +4,19 @@
     "ABOUT": "About me",
     "CONTACT": "Contact"
   },
-  "HOME": {
+  "PROJECTS": {
     "BADGE": "under maintenance",
-    "TITLE": "So glad you\nstopped by!",
+    "TITLE": "So glad you stopped by!",
     "SUBTITLE": "I craft digital experiences with care, clarity and a focus on real people.",
     "DESCRIPTION": "My portfolio is being lovingly prepared. Soon you'll see my projects and stories here.",
     "CTA_CONTACT": "Get in touch",
     "CTA_LINKEDIN": "LinkedIn →"
   },
+  "BUILDING": {
+    "TITLE": "Great to have you here, but the site isn't ready yet!",
+    "SUBTITLE": "In the meantime you can check out my work at:"
+  },
   "FOOTER": {
-    "COPYRIGHT": "© 2025 Sabrina Cardoso · All rights reserved"
+    "COPYRIGHT": "© 2026 Sabrina Cardoso · All rights reserved"
   }
 }
