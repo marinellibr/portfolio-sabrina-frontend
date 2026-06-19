@@ -1,19 +1,10 @@
 <div class="header">
-  <img
-    src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/header-logo.svg"
-    alt="building"
-  />
+  <div class="header-top">
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/header-logo.svg"
+      alt="building"
+    />
 
-  <section class="header-links">
-    <a class="nav-projects" [routerLink]="isHome ? null : '/projects'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.PROJECTS' | translate }}</a>
-    <img
-      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
-    />
-    <a class="nav-about" [routerLink]="isHome ? null : '/about'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.ABOUT' | translate }}</a>
-    <img
-      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
-    />
-    <a class="nav-contact" [routerLink]="isHome ? null : '/contact'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.CONTACT' | translate }}</a>
     <div class="language">
       <img
         [src]="
@@ -25,5 +16,17 @@
       />
       <app-switch [(ngModel)]="lang" />
     </div>
+  </div>
+
+  <section class="header-links">
+    <a class="nav-projects" [routerLink]="isHome ? null : '/projects'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.PROJECTS' | translate }}</a>
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
+    />
+    <a class="nav-about" [routerLink]="isHome ? null : '/about'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.ABOUT' | translate }}</a>
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/images/star.svg"
+    />
+    <a class="nav-contact" [routerLink]="isHome ? null : '/contact'" [routerLinkActive]="isHome ? '' : 'active'">{{ 'NAV.CONTACT' | translate }}</a>
   </section>
 </div>
