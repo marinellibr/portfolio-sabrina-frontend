@@ -4,6 +4,13 @@
     "ABOUT": "Sobre mim",
     "CONTACT": "Contato"
   },
+  "TITLES": {
+    "HOME": "início",
+    "PROJECTS": "projetos",
+    "PROJECT": "projeto",
+    "ABOUT": "sobre-mim",
+    "CONTACT": "contato"
+  },
   "PROJECTS": {
     "BADGE": "em manutenção",
     "TITLE": "Que bom te ver por aqui!",
