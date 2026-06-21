@@ -27,19 +27,52 @@ export class AnalyticsService {
       window.addEventListener("pagehide", () => this.flushScreenTime());
     }
 
+    const source = this.resolveSource();
+
     await this.log(
       "session",
-      this.sessionID,
+      `${this.sessionID} | source: ${source.utm ?? "none"} | referrer: ${source.referrer}`,
       trackSession({
         sessionID: this.sessionID,
         appID: this.appID,
         context: {
           device: "desktop",
           browser: navigator.userAgent,
-          referrer: document.referrer || "direct",
+          referrer: source.utm ?? source.referrer,
         },
       }),
     );
+  }
+
+  // Determina a origem da visita: prioriza UTM (link rastreado intencionalmente)
+  // e cai para document.referrer (clique orgânico) ou "direct".
+  private resolveSource(): { utm: string | null; referrer: string } {
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get("utm_source");
+    const utmMedium = params.get("utm_medium");
+    const utmCampaign = params.get("utm_campaign");
+
+    let utm: string | null = null;
+    if (utmSource) {
+      utm = utmSource;
+      if (utmMedium) utm += `/${utmMedium}`;
+      if (utmCampaign) utm += `/${utmCampaign}`;
+    }
+
+    const referrer = document.referrer
+      ? this.parseReferrer(document.referrer)
+      : "direct";
+
+    return { utm, referrer };
+  }
+
+  // Extrai o domínio limpo do referrer (ex.: "linkedin.com")
+  private parseReferrer(raw: string): string {
+    try {
+      return new URL(raw).hostname.replace(/^www\./, "");
+    } catch {
+      return raw;
+    }
   }
 
   // Marca a entrada numa tela: fecha o tempo da tela anterior e reinicia
