@@ -5,11 +5,11 @@
     "CONTACT": "Contato"
   },
   "TITLES": {
-    "HOME": "início",
-    "PROJECTS": "projetos",
-    "PROJECT": "projeto",
-    "ABOUT": "sobre-mim",
-    "CONTACT": "contato"
+    "HOME": "Portfólio",
+    "PROJECTS": "Projetos",
+    "PROJECT": "Projeto",
+    "ABOUT": "Sobre Mim",
+    "CONTACT": "Contato"
   },
   "PROJECTS": {
     "BADGE": "em manutenção",

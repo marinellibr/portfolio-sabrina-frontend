@@ -11,10 +11,10 @@ export class PageTitleService {
   private readonly title = inject(Title);
   private readonly translate = inject(TranslateService);
 
-  private readonly prefix = "sabrinacardoso/";
+  private readonly prefix = "Sabrina Cardoso | ";
   private currentKey: string | null = null;
 
-  // Atualiza o título "sabrinacardoso/<página>" a cada navegação e
+  // Atualiza o título "Sabrina Cardoso | <página>" a cada navegação e
   // reaplica quando o idioma muda.
   init() {
     this.router.events
@@ -38,7 +38,7 @@ export class PageTitleService {
 
   private apply() {
     if (!this.currentKey) {
-      this.title.setTitle("sabrinacardoso");
+      this.title.setTitle("Sabrina Cardoso");
       return;
     }
     this.translate

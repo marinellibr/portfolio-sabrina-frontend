@@ -5,11 +5,11 @@
     "CONTACT": "Contact"
   },
   "TITLES": {
-    "HOME": "home",
-    "PROJECTS": "projects",
-    "PROJECT": "project",
-    "ABOUT": "about-me",
-    "CONTACT": "contact"
+    "HOME": "Portfolio",
+    "PROJECTS": "Projects",
+    "PROJECT": "Project",
+    "ABOUT": "About Me",
+    "CONTACT": "Contact"
   },
   "PROJECTS": {
     "BADGE": "under maintenance",
