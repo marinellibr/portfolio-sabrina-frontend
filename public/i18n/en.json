@@ -6,10 +6,10 @@
   },
   "TITLES": {
     "HOME": "Portfolio",
-    "PROJECTS": "projects",
-    "PROJECT": "project",
-    "ABOUT": "about-me",
-    "CONTACT": "contact"
+    "PROJECTS": "Projects",
+    "PROJECT": "Project",
+    "ABOUT": "About Me",
+    "CONTACT": "Contact"
   },
   "PROJECTS": {
     "BADGE": "under maintenance",
