@@ -3,6 +3,7 @@ import { RouterOutlet, Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { LanguageService } from "./services/language.service";
 import { AnalyticsService } from "./services/analytics.service";
+import { PageTitleService } from "./services/page-title.service";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 
@@ -19,9 +20,11 @@ export class AppComponent implements OnInit {
   readonly lang = inject(LanguageService);
   private readonly analytics = inject(AnalyticsService);
   private readonly router = inject(Router);
+  private readonly pageTitle = inject(PageTitleService);
 
   async ngOnInit() {
     this.lang.init();
+    this.pageTitle.init();
 
     await this.analytics.initSession();
 
