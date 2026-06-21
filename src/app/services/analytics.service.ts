@@ -38,7 +38,8 @@ export class AnalyticsService {
         context: {
           device: "desktop",
           browser: navigator.userAgent,
-          referrer: source.utm ?? source.referrer,
+          referrer: source.referrer,
+          utmSource: source.utm ?? undefined,
         },
       }),
     );
