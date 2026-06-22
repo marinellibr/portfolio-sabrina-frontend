@@ -1,0 +1,65 @@
+.container {
+  width: 100vw;
+  padding: 64px 88px 0 88px;
+  background-color: #ece9e6;
+
+  display: flex;
+  gap: 72px;
+
+  img {
+    max-width: 464px;
+    max-height: 612px;
+  }
+
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    h2 {
+      font-family: "Gaegu", cursive;
+      font-size: 64px;
+      color: #7c3e00;
+    }
+
+    .text-box {
+      width: 100%;
+      min-height: 200px;
+      background-color: #fefefe;
+      border-radius: 72px;
+      padding: 52px 52px 40px 40px;
+      margin-bottom: 44px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      p {
+        font-family: "Inter", sans-serif;
+        font-size: 20px;
+        color: #000;
+      }
+
+      button {
+        width: 176px;
+        height: 48px;
+        background-color: #7c3e00;
+        border-radius: 24px;
+        border: none;
+
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        color: #fff;
+
+        cursor: pointer;
+
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #5a2e00;
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
