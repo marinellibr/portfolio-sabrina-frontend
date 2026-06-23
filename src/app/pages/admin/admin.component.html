@@ -143,7 +143,7 @@
             Criado em: {{ post.createdAt | date : 'short' }}
           </small>
           <small *ngIf="post.images?.length">
-            Imagens: {{ post.images.length }}
+            Imagens: {{ post.images?.length }}
           </small>
           <small *ngIf="post.tags?.length">
             Tags: {{ post.tags.join(', ') }}
