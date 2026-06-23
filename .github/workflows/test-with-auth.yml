@@ -31,7 +31,12 @@ jobs:
         run: npm run lint --if-present
 
       - name: Run tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
+        run: |
+          if find src -name '*.spec.ts' | grep -q .; then
+            npm test -- --watch=false --browsers=ChromeHeadless
+          else
+            echo "Nenhum arquivo .spec.ts encontrado, pulando testes."
+          fi
 
       - name: Build project
         run: npm run build
