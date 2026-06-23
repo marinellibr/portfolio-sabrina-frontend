@@ -10,7 +10,7 @@ import { Post } from '../../models/post.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
+  styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
   private readonly authService = inject(AuthService);

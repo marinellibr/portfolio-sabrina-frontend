@@ -1,0 +1,334 @@
+$cream: #f7f0e9;
+$brown: #7c3e00;
+$red: #e42312;
+$shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.29);
+
+:host {
+  display: block;
+  flex: 1;
+}
+
+.admin-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 64px 80px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ---------- Header ---------- */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+
+  h1 {
+    font-family: "Gaegu", cursive;
+    font-weight: 400;
+    color: $brown;
+    font-size: 56px;
+    line-height: 1.1;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary,
+.btn-submit {
+  font-family: "Gaegu", cursive;
+  font-size: 26px;
+  color: $cream;
+  background-color: $brown;
+  border: none;
+  border-radius: 32px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $red;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-logout,
+.btn-cancel {
+  font-family: "Gaegu", cursive;
+  font-size: 24px;
+  color: $brown;
+  background-color: transparent;
+  border: 2px solid $brown;
+  border-radius: 32px;
+  padding: 8px 28px;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+
+  &:hover:not(:disabled) {
+    color: $red;
+    border-color: $red;
+  }
+}
+
+/* ---------- Alerts ---------- */
+.success-message,
+.error-message {
+  border-radius: 16px;
+  padding: 14px 24px;
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+.success-message {
+  background-color: rgba(124, 62, 0, 0.1);
+  color: $brown;
+  border: 1px solid rgba(124, 62, 0, 0.3);
+}
+
+.error-message {
+  background-color: rgba(228, 35, 18, 0.1);
+  color: $red;
+  border: 1px solid rgba(228, 35, 18, 0.35);
+}
+
+/* ---------- Form card ---------- */
+.form-section {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 42px;
+  box-shadow: $shadow;
+  padding: 48px;
+  margin-top: 24px;
+  margin-bottom: 48px;
+
+  h2 {
+    font-family: "Gaegu", cursive;
+    font-weight: 400;
+    color: $brown;
+    font-size: 40px;
+    margin-bottom: 32px;
+  }
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-family: "Gaegu", cursive;
+    font-size: 24px;
+    color: $brown;
+    margin-bottom: 8px;
+  }
+
+  input,
+  textarea {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid transparent;
+    border-radius: 24px;
+    padding: 16px 24px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    resize: vertical;
+
+    &::placeholder {
+      color: rgba(124, 62, 0, 0.45);
+    }
+
+    &:focus {
+      outline: none;
+      background-color: #fff;
+      border-color: $brown;
+    }
+
+    &.invalid {
+      border-color: $red;
+    }
+  }
+
+  small {
+    margin-top: 6px;
+    padding-left: 8px;
+    color: rgba(124, 62, 0, 0.7);
+    font-size: 13px;
+  }
+
+  .error-text {
+    color: $red;
+    font-size: 13px;
+    margin-top: 6px;
+    padding-left: 8px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* ---------- Posts list ---------- */
+.posts-list-section {
+  h2 {
+    font-family: "Gaegu", cursive;
+    font-weight: 400;
+    color: $brown;
+    font-size: 40px;
+    margin-bottom: 28px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  color: rgba(124, 62, 0, 0.7);
+  padding: 48px;
+  font-family: "Gaegu", cursive;
+  font-size: 24px;
+}
+
+.post-card {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 32px;
+  box-shadow: $shadow;
+  padding: 28px 36px;
+  margin-bottom: 24px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+
+  h3 {
+    font-family: "Gaegu", cursive;
+    font-weight: 400;
+    color: $brown;
+    font-size: 30px;
+    flex: 1;
+  }
+}
+
+.post-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-edit,
+.btn-delete {
+  font-family: "Gaegu", cursive;
+  font-size: 20px;
+  border: none;
+  border-radius: 24px;
+  padding: 6px 22px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-edit {
+  background-color: $brown;
+  color: $cream;
+
+  &:hover:not(:disabled) {
+    background-color: $red;
+  }
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: $red;
+  border: 2px solid $red;
+
+  &:hover:not(:disabled) {
+    background-color: $red;
+    color: $cream;
+  }
+}
+
+.post-content {
+  color: #000;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(124, 62, 0, 0.2);
+
+  small {
+    color: rgba(124, 62, 0, 0.8);
+    font-size: 13px;
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 32px 20px 64px;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    h1 {
+      font-size: 44px;
+    }
+  }
+
+  .form-section {
+    padding: 32px 24px;
+  }
+
+  .post-header {
+    flex-direction: column;
+  }
+
+  .post-actions {
+    width: 100%;
+
+    .btn-edit,
+    .btn-delete {
+      flex: 1;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .btn-submit,
+    .btn-cancel {
+      width: 100%;
+    }
+  }
+}
