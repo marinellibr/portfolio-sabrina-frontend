@@ -17,11 +17,36 @@
     "SUBTITLE": "Crio experiências digitais com cuidado, clareza e foco em pessoas reais.",
     "DESCRIPTION": "Meu portfólio está sendo preparado com carinho. Em breve você verá meus projetos e histórias por aqui.",
     "CTA_CONTACT": "Entre em contato",
-    "CTA_LINKEDIN": "LinkedIn →"
+    "CTA_LINKEDIN": "LinkedIn"
   },
   "BUILDING": {
     "TITLE": "Que bom te ver, mas ainda estamos ajustando algumas coisas!",
     "SUBTITLE": "Por enquanto você pode conferir meu trabalho em:"
+  },
+  "CONTACT": {
+    "TITLE": "Gostou do meu trabalho?",
+    "SUBTITLE": "Vamos conversar!",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_VALUE": "sabrina21cardoso@gmail.com",
+    "LINKEDIN_LABEL": "LinkedIn",
+    "LINKEDIN_VALUE": "linkedin.com/in/sabrinascardoso",
+    "WHATSAPP_LABEL": "WhatsApp",
+    "WHATSAPP_VALUE": "+55 (11) 98939-8426",
+    "WHATSAPP_MESSAGE": "Olá Sabrina! Gostei do seu portfólio!",
+    "CV_LABEL": "Meu CV",
+    "CV_VALUE": "baixe em pdf (:",
+    "BEHANCE_LABEL": "Behance",
+    "BEHANCE_VALUE": "behance.net/sabrinacardoso7"
+  },
+  "ABOUT": {
+    "TITLE": "Oi, eu sou a Sabrina.",
+    "INTRO": "Meu nome é Sabrina Cardoso tenho 25 anos e sou Product Designer.",
+    "EDUCATION": "Sou formada em Design Gráfico pela UNIP e pós-graduada em User Experience pela Belas Artes de São Paulo. Minha trajetória começou na comunicação visual e, com o tempo, se aproximou cada vez mais de produto, UX/UI e criação de experiências digitais.",
+    "CURRENT_ROLE": "Atualmente, atuo pela BRQ Digital Solutions em projetos para o Itaú, com foco em produtos financeiros, sistemas internos, atendimento e ferramentas operacionais. No dia a dia, trabalho com discovery, mapeamento de jornadas, prototipação, testes de usabilidade, documentação e evolução de fluxos junto a times de Produto, Tecnologia e Negócio.",
+    "INTERESTS": "Tenho interesse especial por projetos que envolvem sistemas complexos, melhoria de processos e experiências que precisam ser simples para quem usa. Acredito que o design tem um papel importante em traduzir necessidades, organizar informações e transformar problemas em soluções mais claras, úteis e intuitivas.",
+    "APPROACH": "Busco criar experiências que conectem pessoas, objetivos de negócio e boas práticas de usabilidade, sempre com atenção à consistência, acessibilidade e impacto real na jornada do usuário.",
+    "CTA": "Quer conhecer melhor minha trajetória? Dá uma olhada no meu currículo :)",
+    "BUTTON": "Meu currículo"
   },
   "FOOTER": {
     "COPYRIGHT": "© 2026 Sabrina Cardoso · Todos os direitos reservados"

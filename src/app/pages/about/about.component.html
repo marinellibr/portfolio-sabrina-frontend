@@ -1,1 +1,23 @@
-<p>about works!</p>
+<div class="container">
+  <img
+    src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/refs/heads/main/images/pp.png"
+    alt="profile picture"
+  />
+
+  <section class="about">
+    <h2>{{ "ABOUT.TITLE" | translate }}</h2>
+
+    <div class="text-box">
+      <p>{{ "ABOUT.INTRO" | translate }}</p>
+      <p>{{ "ABOUT.EDUCATION" | translate }}</p>
+      <p>{{ "ABOUT.CURRENT_ROLE" | translate }}</p>
+      <p>{{ "ABOUT.INTERESTS" | translate }}</p>
+      <p>{{ "ABOUT.APPROACH" | translate }}</p>
+      <p>{{ "ABOUT.CTA" | translate }}</p>
+
+      <button (click)="openCurriculum()">
+        {{ "ABOUT.BUTTON" | translate }}
+      </button>
+    </div>
+  </section>
+</div>
