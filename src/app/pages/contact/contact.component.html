@@ -1,1 +1,18 @@
-<p>contact works!</p>
+<div class="container">
+  <h1>{{ "CONTACT.TITLE" | translate }}</h1>
+  <h2>{{ "CONTACT.SUBTITLE" | translate }}</h2>
+
+  <div class="pills">
+    <div
+      class="pill"
+      *ngFor="let contact of contacts"
+      (click)="handleContactClick(contact)"
+    >
+      <div class="label">
+        <img [src]="rawUrl + contact.icon + '.svg'" />
+        <span>{{ contact.labelKey | translate }}</span>
+      </div>
+      <p>{{ contact.valueKey | translate }}</p>
+    </div>
+  </div>
+</div>
