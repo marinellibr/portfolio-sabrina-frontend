@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiKey: ''
+  apiUrl: 'https://portfolio-sabrina-backend.vercel.app',
 };
