@@ -18,7 +18,7 @@ export class AuthService {
   });
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, credentials).pipe(
+    return this.http.post<AuthResponse>(`${this.baseUrl}/v1/auth/login`, credentials).pipe(
       tap((response) => {
         this.setToken(response.token);
       }),
@@ -30,13 +30,13 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
+    this.clearStoredToken();
     this.authState.set({ token: null, isAuthenticated: false });
     this.router.navigate(['/login']);
   }
 
   setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    this.storeToken(token);
     this.authState.set({ token, isAuthenticated: true });
   }
 
@@ -44,9 +44,37 @@ export class AuthService {
     return this.authState().token;
   }
 
+  // O token fica primariamente em memória (signal). Usamos sessionStorage
+  // apenas para sobreviver a reloads da mesma aba — diferente do localStorage,
+  // ele é apagado ao fechar a aba, reduzindo a janela de exposição em caso de
+  // XSS e evitando que o token persista indefinidamente no dispositivo.
   private getStoredToken(): string | null {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem(this.tokenKey);
+    try {
+      return window.sessionStorage.getItem(this.tokenKey);
+    } catch {
+      return null;
+    }
+  }
+
+  private storeToken(token: string): void {
+    if (typeof window === 'undefined') return;
+    try {
+      window.sessionStorage.setItem(this.tokenKey, token);
+    } catch {
+      /* sessionStorage indisponível (ex: modo privado) — token segue em memória */
+    }
+  }
+
+  private clearStoredToken(): void {
+    if (typeof window === 'undefined') return;
+    try {
+      window.sessionStorage.removeItem(this.tokenKey);
+      // Remove resquícios de versões anteriores que usavam localStorage.
+      window.localStorage.removeItem(this.tokenKey);
+    } catch {
+      /* ignore */
+    }
   }
 
   isAuthenticated(): boolean {

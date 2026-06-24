@@ -14,7 +14,7 @@ export interface CreatePostRequest {
 @Injectable({ providedIn: 'root' })
 export class PostService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'https://portfolio-sabrina-backend.vercel.app/posts';
+  private readonly baseUrl = 'https://portfolio-sabrina-backend.vercel.app/v1/posts';
 
   // Public routes
   getPosts(): Observable<Post[]> {
