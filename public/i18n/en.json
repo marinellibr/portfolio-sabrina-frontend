@@ -9,7 +9,8 @@
     "PROJECTS": "Projects",
     "PROJECT": "Project",
     "ABOUT": "About Me",
-    "CONTACT": "Contact"
+    "CONTACT": "Contact",
+    "LOGIN": "Login"
   },
   "PROJECTS": {
     "BADGE": "under maintenance",

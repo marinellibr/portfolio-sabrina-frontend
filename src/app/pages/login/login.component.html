@@ -18,8 +18,11 @@
           autocomplete="username"
           [class.invalid]="username?.invalid && username?.touched"
         />
-        <span *ngIf="username?.invalid && username?.touched" class="field-error">
-          Usuário obrigatório (mínimo 3 caracteres)
+        <span
+          *ngIf="username?.invalid && username?.touched"
+          class="field-error"
+        >
+          Usuário obrigatório
         </span>
       </div>
 
@@ -33,13 +36,20 @@
           autocomplete="current-password"
           [class.invalid]="password?.invalid && password?.touched"
         />
-        <span *ngIf="password?.invalid && password?.touched" class="field-error">
-          Senha obrigatória (mínimo 6 caracteres)
+        <span
+          *ngIf="password?.invalid && password?.touched"
+          class="field-error"
+        >
+          Senha obrigatória
         </span>
       </div>
 
-      <button type="submit" [disabled]="form.invalid || loading()" class="btn-primary">
-        {{ loading() ? 'Entrando...' : 'Entrar' }}
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="btn-primary"
+      >
+        {{ loading() ? "Entrando..." : "Entrar" }}
       </button>
     </form>
   </div>

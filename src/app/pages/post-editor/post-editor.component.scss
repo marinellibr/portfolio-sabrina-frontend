@@ -1,0 +1,248 @@
+$cream: #f7f0e9;
+$brown: #7c3e00;
+$red: #e42312;
+$shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.29);
+
+:host {
+  display: block;
+  flex: 1;
+}
+
+.post-editor-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 64px 80px;
+  font-family: "Inter", sans-serif;
+}
+
+.post-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 40px;
+
+  h1 {
+    font-family: "Gaegu", cursive;
+    font-weight: 400;
+    color: $brown;
+    font-size: 56px;
+    line-height: 1.1;
+    margin: 8px 0 0;
+  }
+}
+
+.back-link {
+  color: rgba(124, 62, 0, 0.74);
+  font-size: 14px;
+  text-decoration: underline;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+.btn-submit,
+.btn-log-images {
+  font-family: "Gaegu", cursive;
+  font-size: 26px;
+  color: $cream;
+  background-color: $brown;
+  border: none;
+  border-radius: 32px;
+  padding: 12px 32px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $red;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-log-images {
+  align-self: flex-start;
+  margin-top: 16px;
+  font-size: 22px;
+  padding: 10px 28px;
+}
+
+.btn-logout,
+.btn-cancel {
+  font-family: "Gaegu", cursive;
+  font-size: 24px;
+  color: $brown;
+  background-color: transparent;
+  border: 2px solid $brown;
+  border-radius: 32px;
+  padding: 8px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover:not(:disabled) {
+    color: $red;
+    border-color: $red;
+  }
+}
+
+.success-message,
+.error-message,
+.loading-message {
+  border-radius: 16px;
+  padding: 14px 24px;
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+.success-message {
+  background-color: rgba(124, 62, 0, 0.1);
+  color: $brown;
+  border: 1px solid rgba(124, 62, 0, 0.3);
+}
+
+.error-message {
+  background-color: rgba(228, 35, 18, 0.1);
+  color: $red;
+  border: 1px solid rgba(228, 35, 18, 0.35);
+}
+
+.loading-message {
+  background-color: rgba(124, 62, 0, 0.1);
+  color: $brown;
+  border: 1px solid rgba(124, 62, 0, 0.2);
+}
+
+.form-section {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 42px;
+  box-shadow: $shadow;
+  padding: 48px;
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-family: "Gaegu", cursive;
+    font-size: 24px;
+    color: $brown;
+    margin-bottom: 8px;
+  }
+
+  input,
+  textarea {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(124, 62, 0, 0.45);
+    border-radius: 24px;
+    padding: 16px 24px;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+    resize: vertical;
+
+    &::placeholder {
+      color: rgba(124, 62, 0, 0.45);
+    }
+
+    &:focus {
+      outline: none;
+      background-color: #fff;
+      border-color: $brown;
+    }
+
+    &.invalid {
+      border-color: $red;
+    }
+  }
+
+  small {
+    margin-top: 6px;
+    padding-left: 8px;
+    color: rgba(124, 62, 0, 0.7);
+    font-size: 13px;
+  }
+
+  .error-text {
+    color: $red;
+    font-size: 13px;
+    margin-top: 6px;
+    padding-left: 8px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.button-fields,
+.post-meta-fields {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 768px) {
+  .post-editor-container {
+    padding: 32px 20px 64px;
+  }
+
+  .post-editor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    h1 {
+      font-size: 44px;
+    }
+  }
+
+  .form-section {
+    padding: 32px 24px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .btn-submit,
+    .btn-cancel {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .button-fields,
+  .post-meta-fields {
+    grid-template-columns: 1fr;
+  }
+}

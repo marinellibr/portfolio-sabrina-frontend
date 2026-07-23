@@ -44,4 +44,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { titleKey: "TITLES.ADMIN" },
   },
+  {
+    path: "admin/post-editor",
+    loadComponent: () => import("./pages/post-editor/post-editor.component").then((m) => m.PostEditorComponent),
+    canActivate: [authGuard],
+    data: { titleKey: "TITLES.ADMIN" },
+  },
+  {
+    path: "post-editor/:id",
+    loadComponent: () => import("./pages/post-editor/post-editor.component").then((m) => m.PostEditorComponent),
+    canActivate: [authGuard],
+    data: { titleKey: "TITLES.ADMIN" },
+  },
 ];

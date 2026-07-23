@@ -3,11 +3,14 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { catchError, throwError } from 'rxjs';
 
+const API_BASE_URL = 'https://portfolio-sabrina-backend.vercel.app';
+
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
+  const isApiRequest = req.url.startsWith(API_BASE_URL);
 
-  if (token) {
+  if (token && isApiRequest) {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
@@ -17,7 +20,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      if (isApiRequest && error.status === 401) {
         authService.handleUnauthorized();
       }
 

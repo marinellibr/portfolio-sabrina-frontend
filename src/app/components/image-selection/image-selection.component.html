@@ -1,0 +1,50 @@
+<section class="image-selection">
+  <div class="file-list" aria-label="Project asset files">
+    <div class="file-list-header">
+      <span>Arquivos do projeto</span>
+      <button type="button" class="refresh-button" [disabled]="loadingFiles" (click)="refreshFiles()">
+        {{ loadingFiles ? "Atualizando..." : "Atualizar" }}
+      </button>
+    </div>
+
+    <p *ngIf="loadingFiles" class="status-text">Loading files...</p>
+    <p *ngIf="fileLoadError" class="status-text">Using saved file list.</p>
+
+    <div *ngFor="let file of files" class="file-option">
+      <label class="file-main-option">
+        <input
+          type="checkbox"
+          [checked]="isSelected(file.name)"
+          (change)="onToggle(file.name, $any($event.target).checked)"
+        />
+        <span>{{ file.name }}</span>
+      </label>
+
+      <label
+        *ngIf="isSelected(file.name)"
+        class="cover-option"
+        [class.visible]="isCoverSelected(file.name)"
+      >
+        <input
+          type="checkbox"
+          [checked]="isCoverSelected(file.name)"
+          (change)="onCoverToggle(file.name, $any($event.target).checked)"
+        />
+        <span>Capa</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="preview-panel">
+    <ng-container *ngIf="selectedFiles.length; else emptyPreview">
+      <figure *ngFor="let file of selectedFiles" class="preview-item">
+        <figcaption>{{ file.name }}</figcaption>
+        <img [src]="file.url" [alt]="file.name" />
+      </figure>
+    </ng-container>
+
+    <ng-template #emptyPreview>
+      <p>Select a file to preview it here.</p>
+    </ng-template>
+  </div>
+</section>

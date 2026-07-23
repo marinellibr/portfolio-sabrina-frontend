@@ -1,15 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Post, PostSummary } from '../models/post.model';
+import { Post, PostSummary, ProjectPostPayload } from '../models/post.model';
 
-export interface CreatePostRequest {
-  title: string;
-  content: string;
-  images?: string[];
-  videos?: string[];
-  tags?: string[];
-}
+export type CreatePostRequest = ProjectPostPayload;
 
 @Injectable({ providedIn: 'root' })
 export class PostService {

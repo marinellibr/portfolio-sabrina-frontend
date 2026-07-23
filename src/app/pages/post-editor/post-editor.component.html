@@ -1,0 +1,166 @@
+<div class="post-editor-container">
+  <header class="post-editor-header">
+    <div>
+      <a routerLink="/admin" class="back-link">< Voltar para admin</a>
+      <h1>{{ postId() ? "Editar Post" : "Novo Post" }}</h1>
+    </div>
+  </header>
+
+  <main class="post-editor-content">
+    <div *ngIf="success()" class="success-message">
+      {{ success() }}
+    </div>
+
+    <div *ngIf="error()" class="error-message">
+      {{ error() }}
+    </div>
+
+    <div *ngIf="loadingPost()" class="loading-message">Carregando post...</div>
+
+    <div *ngIf="!loadingPost()" class="form-section">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="post-form">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="Título do post"
+            [class.invalid]="
+              form.get('title')?.invalid && form.get('title')?.touched
+            "
+          />
+          <span
+            *ngIf="form.get('title')?.invalid && form.get('title')?.touched"
+            class="error-text"
+          >
+            Título é obrigatório
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="content">Conteúdo</label>
+          <textarea
+            id="content"
+            formControlName="content"
+            placeholder="Conteúdo do post"
+            rows="8"
+            [class.invalid]="
+              form.get('content')?.invalid && form.get('content')?.touched
+            "
+          ></textarea>
+          <span
+            *ngIf="form.get('content')?.invalid && form.get('content')?.touched"
+            class="error-text"
+          >
+            Conteúdo é obrigatório
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="coverImage">Imagem de capa</label>
+          <textarea
+            id="coverImage"
+            formControlName="coverImage"
+            placeholder="https://exemplo.com/capa.jpg"
+            rows="2"
+          ></textarea>
+          <small>Protocolo http:// ou https:// obrigatório</small>
+        </div>
+
+        <div class="form-group" formGroupName="button">
+          <label>Botão (opcional)</label>
+          <div class="button-fields">
+            <input
+              id="button-label"
+              type="text"
+              formControlName="label"
+              placeholder="Label do botão"
+            />
+            <input
+              id="button-link"
+              type="text"
+              formControlName="link"
+              placeholder="Link do botão"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tags">Categorias (separadas por vírgula)</label>
+          <input
+            id="tags"
+            type="text"
+            formControlName="tags"
+            placeholder="categoria 1, categoria 2, categoria 3"
+          />
+        </div>
+
+        <div class="post-meta-fields">
+          <div class="form-group">
+            <label for="year">Ano</label>
+            <input
+              id="year"
+              type="text"
+              formControlName="year"
+              placeholder="2026"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="projectType">Tipo de projeto</label>
+            <input
+              id="projectType"
+              type="text"
+              formControlName="projectType"
+              placeholder="Branding, editorial, campanha..."
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Selecionar imagens do projeto</label>
+          <app-image-selection
+            [mult]="true"
+            (selectedFilesChange)="onImageSelectionChange($event)"
+          ></app-image-selection>
+          <button
+            type="button"
+            class="btn-log-images"
+            (click)="logSelectedImageFiles()"
+          >
+            Console log selected images
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="video">Vídeo</label>
+          <textarea
+            id="video"
+            formControlName="video"
+            placeholder="https://exemplo.com/video.mp4"
+            rows="3"
+          ></textarea>
+          <small>Protocolo http:// ou https:// obrigatório</small>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            [disabled]="form.invalid || loading()"
+            class="btn-submit"
+          >
+            {{
+              loading()
+                ? "Salvando..."
+                : postId()
+                  ? "Salvar Post"
+                  : "Criar Post"
+            }}
+          </button>
+          <a routerLink="/admin" class="btn-cancel">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
