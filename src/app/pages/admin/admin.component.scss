@@ -52,7 +52,9 @@ $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.29);
 
 /* ---------- Alerts ---------- */
 .success-message,
-.error-message {
+.error-message,
+.get-error-message,
+.loading-message {
   border-radius: 16px;
   padding: 14px 24px;
   margin-bottom: 24px;
@@ -65,7 +67,14 @@ $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.29);
   border: 1px solid rgba(124, 62, 0, 0.3);
 }
 
-.error-message {
+.error-message,
+.loading-message {
+  background-color: rgba(124, 62, 0, 0.1);
+  color: $brown;
+  border: 1px solid rgba(124, 62, 0, 0.3);
+}
+
+.get-error-message {
   background-color: rgba(228, 35, 18, 0.1);
   color: $red;
   border: 1px solid rgba(228, 35, 18, 0.35);

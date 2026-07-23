@@ -13,6 +13,14 @@
       {{ error() }}
     </div>
 
+    <div *ngIf="getPostsError()" class="get-error-message">
+      {{ getPostsError() }}
+    </div>
+
+    <div *ngIf="loadingPosts()" class="loading-message">
+      Carregando posts...
+    </div>
+
     <!-- Lista de Posts -->
     <div class="posts-list-section">
       <h2>Posts Criados ({{ posts().length }})</h2>
@@ -49,7 +57,7 @@
         </article>
       </div>
 
-      <div *ngIf="posts().length === 0" class="empty-state">
+      <div *ngIf="!loadingPosts() && posts().length === 0" class="empty-state">
         Nenhum post criado ainda.
       </div>
     </div>

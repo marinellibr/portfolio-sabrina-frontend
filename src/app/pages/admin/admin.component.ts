@@ -19,8 +19,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   posts = signal<Post[]>([]);
   error = signal<string | null>(null);
+  getPostsError = signal<string | null>(null);
   success = signal<string | null>(null);
   deletingId = signal<string | null>(null);
+  loadingPosts = signal(false);
   imageRotationIndex = signal(0);
 
   ngOnInit(): void {
@@ -37,9 +39,18 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   loadPosts(): void {
+    this.loadingPosts.set(true);
+    this.getPostsError.set(null);
     this.postService.getPosts().subscribe({
-      next: (posts) => this.posts.set(posts),
-      error: (err) => console.error('Error loading posts:', err),
+      next: (posts) => {
+        this.posts.set(posts);
+        this.loadingPosts.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading posts:', err);
+        this.getPostsError.set(err.error?.message || 'Erro ao carregar posts');
+        this.loadingPosts.set(false);
+      },
     });
   }
 
