@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
-import { Post } from '../../models/post.model';
+import { Post, ProjectPostImage } from '../../models/post.model';
 
 @Component({
   selector: 'app-admin',
@@ -12,17 +12,28 @@ import { Post } from '../../models/post.model';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly postService = inject(PostService);
+  private imageRotationTimer: ReturnType<typeof setInterval> | null = null;
 
   posts = signal<Post[]>([]);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
   deletingId = signal<string | null>(null);
+  imageRotationIndex = signal(0);
 
   ngOnInit(): void {
     this.loadPosts();
+    this.imageRotationTimer = setInterval(() => {
+      this.imageRotationIndex.update((index) => index + 1);
+    }, 1500);
+  }
+
+  ngOnDestroy(): void {
+    if (this.imageRotationTimer) {
+      clearInterval(this.imageRotationTimer);
+    }
   }
 
   loadPosts(): void {
@@ -30,6 +41,13 @@ export class AdminComponent implements OnInit {
       next: (posts) => this.posts.set(posts),
       error: (err) => console.error('Error loading posts:', err),
     });
+  }
+
+  getPostCardImage(post: Post, index: number): string {
+    const images = this.getCardImages(post);
+    if (!images.length) return '';
+
+    return images[(this.imageRotationIndex() + index) % images.length];
   }
 
   deletePost(id: string): void {
@@ -52,5 +70,23 @@ export class AdminComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  private getCardImages(post: Post): string[] {
+    const images = new Set<string>();
+
+    if (post.coverImage) {
+      images.add(post.coverImage);
+    }
+
+    if (!Array.isArray(post.images)) return [...images];
+
+    post.images
+      .filter((image): image is ProjectPostImage => typeof image !== 'string' && image.cover)
+      .map((image) => image.url)
+      .filter(Boolean)
+      .forEach((image) => images.add(image));
+
+    return [...images];
   }
 }

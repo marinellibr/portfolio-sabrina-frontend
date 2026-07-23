@@ -1,18 +1,28 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ImageSelectionComponent } from '../../components/image-selection/image-selection.component';
-import { ProjectPostImage } from '../../models/post.model';
-import { AuthService } from '../../services/auth.service';
-import { CreatePostRequest, PostService } from '../../services/post.service';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject, signal } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ImageSelectionComponent } from "../../components/image-selection/image-selection.component";
+import { ProjectPostImage } from "../../models/post.model";
+import { AuthService } from "../../services/auth.service";
+import { CreatePostRequest, PostService } from "../../services/post.service";
 
 @Component({
-  selector: 'app-post-editor',
+  selector: "app-post-editor",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, ImageSelectionComponent],
-  templateUrl: './post-editor.component.html',
-  styleUrls: ['./post-editor.component.scss'],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    ImageSelectionComponent,
+  ],
+  templateUrl: "./post-editor.component.html",
+  styleUrls: ["./post-editor.component.scss"],
 })
 export class PostEditorComponent implements OnInit {
   private readonly authService = inject(AuthService);
@@ -31,22 +41,22 @@ export class PostEditorComponent implements OnInit {
 
   constructor() {
     this.form = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(200)]],
-      content: ['', [Validators.required, Validators.maxLength(20000)]],
-      coverImage: [''],
-      video: [''],
-      tags: [''],
-      year: [''],
-      projectType: [''],
+      title: ["", [Validators.required, Validators.maxLength(200)]],
+      content: ["", [Validators.required, Validators.maxLength(20000)]],
+      coverImage: [""],
+      video: [""],
+      tags: [""],
+      year: [""],
+      projectType: [""],
       button: this.fb.group({
-        label: [''],
-        link: [''],
+        label: [""],
+        link: [""],
       }),
     });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get("id");
 
     if (!id) return;
 
@@ -58,21 +68,23 @@ export class PostEditorComponent implements OnInit {
         this.form.patchValue({
           title: post.title,
           content: post.content,
-          coverImage: post.coverImage || '',
-          video: post.video || post.videos?.[0] || '',
-          tags: (post.categories || post.tags || []).join(', '),
-          year: post.year || '',
-          projectType: Array.isArray(post.projectType) ? post.projectType.join(', ') : post.projectType || '',
+          coverImage: post.coverImage || "",
+          video: post.video || post.videos?.[0] || "",
+          tags: (post.categories || post.tags || []).join(", "),
+          year: post.year || "",
+          projectType: Array.isArray(post.projectType)
+            ? post.projectType.join(", ")
+            : post.projectType || "",
           button: {
-            label: post.button?.label || '',
-            link: post.button?.link || '',
+            label: post.button?.label || "",
+            link: post.button?.link || "",
           },
         });
         this.selectedImageFiles.set(this.getPostImages(post.images));
         this.loadingPost.set(false);
       },
       error: (err) => {
-        this.error.set(err.error?.message || 'Erro ao carregar post');
+        this.error.set(err.error?.message || "Erro ao carregar post");
         this.loadingPost.set(false);
       },
     });
@@ -103,12 +115,16 @@ export class PostEditorComponent implements OnInit {
 
     request.subscribe({
       next: () => {
-        this.success.set(this.postId() ? 'Post atualizado com sucesso!' : 'Post criado com sucesso!');
+        this.success.set(
+          this.postId()
+            ? "Post atualizado com sucesso!"
+            : "Post criado com sucesso!",
+        );
         this.loading.set(false);
-        setTimeout(() => this.router.navigate(['/admin']), 900);
+        setTimeout(() => this.router.navigate(["/admin"]), 900);
       },
       error: (err) => {
-        this.error.set(err.error?.message || 'Erro ao salvar post');
+        this.error.set(err.error?.message || "Erro ao salvar post");
         this.loading.set(false);
       },
     });
@@ -116,10 +132,6 @@ export class PostEditorComponent implements OnInit {
 
   onImageSelectionChange(images: ProjectPostImage[]): void {
     this.selectedImageFiles.set(images);
-  }
-
-  logSelectedImageFiles(): void {
-    console.log(this.selectedImageFiles());
   }
 
   logout(): void {
@@ -134,19 +146,21 @@ export class PostEditorComponent implements OnInit {
       .filter(Boolean);
   }
 
-  private parseButton(value: { label?: string; link?: string } | null): CreatePostRequest["button"] {
+  private parseButton(
+    value: { label?: string; link?: string } | null,
+  ): CreatePostRequest["button"] {
     const label = value?.label?.trim();
     const link = value?.link?.trim();
 
     return {
-      label: label || '',
-      link: link || '',
+      label: label || "",
+      link: link || "",
     };
   }
 
   private parseOptionalText(value: string): string {
     const trimmedValue = value?.trim();
-    return trimmedValue || '';
+    return trimmedValue || "";
   }
 
   private getPostImages(images: unknown): ProjectPostImage[] {
@@ -154,7 +168,7 @@ export class PostEditorComponent implements OnInit {
 
     return images
       .map((image) => {
-        if (typeof image === 'string') {
+        if (typeof image === "string") {
           return {
             url: image,
             cover: false,

@@ -13,49 +13,44 @@
       {{ error() }}
     </div>
 
-    <a routerLink="/admin/post-editor" class="btn-primary">
-      + Novo Post
-    </a>
-
     <!-- Lista de Posts -->
     <div class="posts-list-section">
       <h2>Posts Criados ({{ posts().length }})</h2>
 
-      <div *ngIf="posts().length === 0" class="empty-state">
-        Nenhum post criado ainda.
+      <div class="posts-grid">
+        <a routerLink="/admin/post-editor" class="post-card create-post-card" aria-label="Criar novo post">
+          <span class="plus-icon"></span>
+        </a>
+
+        <article
+          *ngFor="let post of posts(); let index = index"
+          class="post-card"
+          [class.has-image]="getPostCardImage(post, index)"
+          [style.background-image]="getPostCardImage(post, index) ? 'url(' + getPostCardImage(post, index) + ')' : null"
+        >
+          <div class="post-card-content">
+            <h3>{{ post.title }}</h3>
+            <div class="post-actions">
+              <button
+                [routerLink]="['/post-editor', post._id]"
+                class="btn-edit"
+              >
+                Editar
+              </button>
+              <button
+                (click)="deletePost(post._id)"
+                class="btn-delete"
+                [disabled]="deletingId() === post._id"
+              >
+                {{ deletingId() === post._id ? "Deletando..." : "Excluir" }}
+              </button>
+            </div>
+          </div>
+        </article>
       </div>
 
-      <div *ngFor="let post of posts()" class="post-card">
-        <div class="post-header">
-          <h3>{{ post.title }}</h3>
-          <div class="post-actions">
-            <button
-              [routerLink]="['/post-editor', post._id]"
-              class="btn-edit"
-            >
-              Editar
-            </button>
-            <button
-              (click)="deletePost(post._id)"
-              class="btn-delete"
-              [disabled]="deletingId() === post._id"
-            >
-              {{ deletingId() === post._id ? "Deletando..." : "Deletar" }}
-            </button>
-          </div>
-        </div>
-
-        <p class="post-content">{{ post.content | slice: 0 : 200 }}...</p>
-
-        <div class="post-meta">
-          <small> Criado em: {{ post.createdAt | date: "short" }} </small>
-          <small *ngIf="post.images?.length">
-            Imagens: {{ post.images?.length }}
-          </small>
-          <small *ngIf="post.tags?.length">
-            Tags: {{ post.tags.join(", ") }}
-          </small>
-        </div>
+      <div *ngIf="posts().length === 0" class="empty-state">
+        Nenhum post criado ainda.
       </div>
     </div>
   </main>
