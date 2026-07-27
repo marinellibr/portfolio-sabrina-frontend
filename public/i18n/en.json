@@ -20,6 +20,11 @@
     "CTA_CONTACT": "Get in touch",
     "CTA_LINKEDIN": "LinkedIn"
   },
+  "PROJECT_DETAILS": {
+    "CATEGORIES": "Categories",
+    "YEAR": "Year",
+    "PROJECT_TYPE": "Project type"
+  },
   "BUILDING": {
     "TITLE": "Great to have you here, but the site isn't ready yet!",
     "SUBTITLE": "In the meantime you can check out my work at:"

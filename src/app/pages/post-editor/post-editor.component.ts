@@ -1,8 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, inject, signal } from "@angular/core";
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
@@ -11,6 +13,15 @@ import { ImageSelectionComponent } from "../../components/image-selection/image-
 import { ProjectPostImage } from "../../models/post.model";
 import { AuthService } from "../../services/auth.service";
 import { CreatePostRequest, PostService } from "../../services/post.service";
+
+function isHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
 
 @Component({
   selector: "app-post-editor",
@@ -42,15 +53,44 @@ export class PostEditorComponent implements OnInit {
   constructor() {
     this.form = this.fb.group({
       title: ["", [Validators.required, Validators.maxLength(200)]],
-      content: ["", [Validators.required, Validators.maxLength(20000)]],
-      coverImage: [""],
-      video: [""],
+      titleEn: ["", [Validators.required, Validators.maxLength(200)]],
+      description: ["", [Validators.required, Validators.maxLength(20000)]],
+      descriptionEn: ["", [Validators.required, Validators.maxLength(20000)]],
+      coverImage: [
+        "",
+        [
+          Validators.required,
+          Validators.maxLength(2000),
+          this.httpUrlValidator,
+        ],
+      ],
+      video: ["", [Validators.maxLength(2000), this.optionalHttpUrlValidator]],
       tags: [""],
-      year: [""],
+      tagsEn: [""],
+      year: ["", [Validators.required, Validators.maxLength(20)]],
       projectType: [""],
+      projectTypeEn: [""],
       button: this.fb.group({
-        label: [""],
-        link: [""],
+        label: ["", [Validators.required, Validators.maxLength(120)]],
+        link: [
+          "",
+          [
+            Validators.required,
+            Validators.maxLength(2000),
+            this.httpUrlValidator,
+          ],
+        ],
+      }),
+      buttonEn: this.fb.group({
+        label: ["", [Validators.required, Validators.maxLength(120)]],
+        link: [
+          "",
+          [
+            Validators.required,
+            Validators.maxLength(2000),
+            this.httpUrlValidator,
+          ],
+        ],
       }),
     });
   }
@@ -67,17 +107,29 @@ export class PostEditorComponent implements OnInit {
       next: (post) => {
         this.form.patchValue({
           title: post.title,
-          content: post.content,
+          titleEn: post.titleEn || post.title,
+          description: post.description || post.content || "",
+          descriptionEn:
+            post.descriptionEn || post.description || post.content || "",
           coverImage: post.coverImage || "",
           video: post.video || post.videos?.[0] || "",
           tags: (post.categories || post.tags || []).join(", "),
+          tagsEn: (post.categoriesEn?.length
+            ? post.categoriesEn
+            : post.categories || post.tags || []
+          ).join(", "),
           year: post.year || "",
           projectType: Array.isArray(post.projectType)
             ? post.projectType.join(", ")
             : post.projectType || "",
+          projectTypeEn: this.getProjectTypeFallback(post.projectTypeEn, post.projectType),
           button: {
             label: post.button?.label || "",
             link: post.button?.link || "",
+          },
+          buttonEn: {
+            label: post.buttonEn?.label || post.button?.label || "",
+            link: post.buttonEn?.link || post.button?.link || "",
           },
         });
         this.selectedImageFiles.set(this.getPostImages(post.images));
@@ -100,11 +152,17 @@ export class PostEditorComponent implements OnInit {
     const postData: CreatePostRequest = {
       coverImage: this.parseOptionalText(formValue.coverImage),
       title: formValue.title,
-      content: formValue.content,
+      titleEn: formValue.titleEn,
+      description: formValue.description,
+      descriptionEn: formValue.descriptionEn,
+      content: formValue.description,
       button: this.parseButton(formValue.button),
+      buttonEn: this.parseButton(formValue.buttonEn),
       categories: this.parseList(formValue.tags),
+      categoriesEn: this.parseList(formValue.tagsEn),
       year: this.parseOptionalText(formValue.year),
       projectType: this.parseList(formValue.projectType),
+      projectTypeEn: this.parseList(formValue.projectTypeEn),
       images: this.selectedImageFiles(),
       video: this.parseOptionalText(formValue.video),
     };
@@ -124,7 +182,13 @@ export class PostEditorComponent implements OnInit {
         setTimeout(() => this.router.navigate(["/admin"]), 900);
       },
       error: (err) => {
-        this.error.set(err.error?.message || "Erro ao salvar post");
+        const validationErrors = err.error?.errors;
+        const details = Array.isArray(validationErrors)
+          ? `: ${validationErrors.join("; ")}`
+          : "";
+        this.error.set(
+          `${err.error?.message || "Erro ao salvar post"}${details}`,
+        );
         this.loading.set(false);
       },
     });
@@ -163,6 +227,28 @@ export class PostEditorComponent implements OnInit {
     return trimmedValue || "";
   }
 
+  private httpUrlValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (typeof value !== "string" || value.trim().length === 0) {
+      return null;
+    }
+
+    return isHttpUrl(value) ? null : { url: true };
+  }
+
+  private optionalHttpUrlValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const value = control.value;
+
+    if (typeof value !== "string" || value.trim().length === 0) {
+      return null;
+    }
+
+    return isHttpUrl(value) ? null : { url: true };
+  }
+
   private getPostImages(images: unknown): ProjectPostImage[] {
     if (!Array.isArray(images)) return [];
 
@@ -182,5 +268,22 @@ export class PostEditorComponent implements OnInit {
         };
       })
       .filter((image) => image.url);
+  }
+
+  private getProjectTypeFallback(
+    projectTypeEn: string | string[] | undefined,
+    projectType: string | string[] | undefined,
+  ): string {
+    const value = Array.isArray(projectTypeEn)
+      ? projectTypeEn
+      : projectTypeEn
+        ? [projectTypeEn]
+        : [];
+
+    if (value.length) return value.join(", ");
+
+    return Array.isArray(projectType)
+      ? projectType.join(", ")
+      : projectType || "";
   }
 }

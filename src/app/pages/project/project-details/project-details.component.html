@@ -1,3 +1,72 @@
-<main class="main">
-  <p>project-details works!</p>
+<main class="main" *ngIf="post as project">
+  <section class="cover-hero" *ngIf="project.coverImage">
+    <img [src]="project.coverImage" [alt]="getProjectTitle(project)" />
+  </section>
+
+  <section class="project-cards">
+    <article class="project-card project-card-main">
+      <h1>{{ getProjectTitle(project) }}</h1>
+      <p class="project-description">{{ getProjectDescription(project) }}</p>
+
+      <a
+        *ngIf="getProjectButton(project) as button"
+        class="project-button"
+        [href]="button.link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ button.label }}
+      </a>
+    </article>
+
+    <aside class="project-card project-card-side">
+      <div class="metadata-group" *ngIf="getProjectCategories(project).length">
+        <h2>{{ "PROJECT_DETAILS.CATEGORIES" | translate }}</h2>
+        <div class="metadata-chips">
+          <span
+            class="metadata-chip"
+            *ngFor="let category of getProjectCategories(project)"
+          >
+            {{ category }}
+          </span>
+        </div>
+      </div>
+
+      <div class="metadata-group" *ngIf="project.year">
+        <h2>{{ "PROJECT_DETAILS.YEAR" | translate }}</h2>
+        <div class="metadata-chips">
+          <span class="metadata-chip">{{ project.year }}</span>
+        </div>
+      </div>
+
+      <div class="metadata-group" *ngIf="getProjectTypes(project).length">
+        <h2>{{ "PROJECT_DETAILS.PROJECT_TYPE" | translate }}</h2>
+        <div class="metadata-chips">
+          <span
+            class="metadata-chip"
+            *ngFor="let projectType of getProjectTypes(project)"
+          >
+            {{ projectType }}
+          </span>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="project-images" *ngIf="getProjectImages(project).length">
+    <img
+      *ngFor="let image of getProjectImages(project)"
+      [src]="image"
+      [alt]="getProjectTitle(project)"
+    />
+  </section>
+
+  <section class="project-video" *ngIf="project.video">
+    <iframe
+      [src]="getVideoUrl(project)"
+      [title]="getProjectTitle(project)"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </section>
 </main>

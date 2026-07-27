@@ -39,21 +39,66 @@
         </div>
 
         <div class="form-group">
-          <label for="content">Conteúdo</label>
+          <label for="titleEn">Título 🇬🇧</label>
+          <input
+            id="titleEn"
+            type="text"
+            formControlName="titleEn"
+            placeholder="Post title"
+            [class.invalid]="
+              form.get('titleEn')?.invalid && form.get('titleEn')?.touched
+            "
+          />
+          <span
+            *ngIf="form.get('titleEn')?.invalid && form.get('titleEn')?.touched"
+            class="error-text"
+          >
+            Título em inglês é obrigatório
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição</label>
           <textarea
-            id="content"
-            formControlName="content"
+            id="description"
+            formControlName="description"
             placeholder="Conteúdo do post"
             rows="8"
             [class.invalid]="
-              form.get('content')?.invalid && form.get('content')?.touched
+              form.get('description')?.invalid && form.get('description')?.touched
             "
           ></textarea>
           <span
-            *ngIf="form.get('content')?.invalid && form.get('content')?.touched"
+            *ngIf="
+              form.get('description')?.invalid &&
+              form.get('description')?.touched
+            "
             class="error-text"
           >
-            Conteúdo é obrigatório
+            Descrição é obrigatória
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="descriptionEn">Descrição 🇬🇧</label>
+          <textarea
+            id="descriptionEn"
+            formControlName="descriptionEn"
+            placeholder="Post description"
+            rows="8"
+            [class.invalid]="
+              form.get('descriptionEn')?.invalid &&
+              form.get('descriptionEn')?.touched
+            "
+          ></textarea>
+          <span
+            *ngIf="
+              form.get('descriptionEn')?.invalid &&
+              form.get('descriptionEn')?.touched
+            "
+            class="error-text"
+          >
+            Descrição em inglês é obrigatória
           </span>
         </div>
 
@@ -64,26 +109,93 @@
             formControlName="coverImage"
             placeholder="https://exemplo.com/capa.jpg"
             rows="2"
+            [class.invalid]="
+              form.get('coverImage')?.invalid && form.get('coverImage')?.touched
+            "
           ></textarea>
           <small>Protocolo http:// ou https:// obrigatório</small>
+          <span
+            *ngIf="
+              form.get('coverImage')?.invalid && form.get('coverImage')?.touched
+            "
+            class="error-text"
+          >
+            Imagem de capa é obrigatória e deve ser uma URL válida
+          </span>
         </div>
 
         <div class="form-group" formGroupName="button">
-          <label>Botão (opcional)</label>
+          <label>Botão</label>
           <div class="button-fields">
             <input
               id="button-label"
               type="text"
               formControlName="label"
               placeholder="Label do botão"
+              [class.invalid]="
+                form.get('button.label')?.invalid &&
+                form.get('button.label')?.touched
+              "
             />
             <input
               id="button-link"
               type="text"
               formControlName="link"
               placeholder="Link do botão"
+              [class.invalid]="
+                form.get('button.link')?.invalid &&
+                form.get('button.link')?.touched
+              "
             />
           </div>
+          <span
+            *ngIf="
+              form.get('button')?.invalid &&
+              (form.get('button.label')?.touched ||
+                form.get('button.link')?.touched)
+            "
+            class="error-text"
+          >
+            Label e link do botão são obrigatórios. O link deve ser uma URL
+            válida.
+          </span>
+        </div>
+
+        <div class="form-group" formGroupName="buttonEn">
+          <label>Botão 🇬🇧</label>
+          <div class="button-fields">
+            <input
+              id="button-en-label"
+              type="text"
+              formControlName="label"
+              placeholder="Button label"
+              [class.invalid]="
+                form.get('buttonEn.label')?.invalid &&
+                form.get('buttonEn.label')?.touched
+              "
+            />
+            <input
+              id="button-en-link"
+              type="text"
+              formControlName="link"
+              placeholder="Button link"
+              [class.invalid]="
+                form.get('buttonEn.link')?.invalid &&
+                form.get('buttonEn.link')?.touched
+              "
+            />
+          </div>
+          <span
+            *ngIf="
+              form.get('buttonEn')?.invalid &&
+              (form.get('buttonEn.label')?.touched ||
+                form.get('buttonEn.link')?.touched)
+            "
+            class="error-text"
+          >
+            Label e link do botão em inglês são obrigatórios. O link deve ser
+            uma URL válida.
+          </span>
         </div>
 
         <div class="form-group">
@@ -96,6 +208,16 @@
           />
         </div>
 
+        <div class="form-group">
+          <label for="tagsEn">Categorias 🇬🇧 (separadas por vírgula)</label>
+          <input
+            id="tagsEn"
+            type="text"
+            formControlName="tagsEn"
+            placeholder="category 1, category 2, category 3"
+          />
+        </div>
+
         <div class="post-meta-fields">
           <div class="form-group">
             <label for="year">Ano</label>
@@ -104,7 +226,16 @@
               type="text"
               formControlName="year"
               placeholder="2026"
+              [class.invalid]="
+                form.get('year')?.invalid && form.get('year')?.touched
+              "
             />
+            <span
+              *ngIf="form.get('year')?.invalid && form.get('year')?.touched"
+              class="error-text"
+            >
+              Ano é obrigatório
+            </span>
           </div>
 
           <div class="form-group">
@@ -116,12 +247,23 @@
               placeholder="Branding, editorial, campanha..."
             />
           </div>
+
+          <div class="form-group">
+            <label for="projectTypeEn">Tipo de projeto 🇬🇧</label>
+            <input
+              id="projectTypeEn"
+              type="text"
+              formControlName="projectTypeEn"
+              placeholder="Branding, editorial, campaign..."
+            />
+          </div>
         </div>
 
         <div class="form-group">
           <label>Selecionar imagens do projeto</label>
           <app-image-selection
             [mult]="true"
+            [selectedImages]="selectedImageFiles()"
             (selectedFilesChange)="onImageSelectionChange($event)"
           ></app-image-selection>
         </div>
@@ -133,8 +275,17 @@
             formControlName="video"
             placeholder="https://exemplo.com/video.mp4"
             rows="3"
+            [class.invalid]="
+              form.get('video')?.invalid && form.get('video')?.touched
+            "
           ></textarea>
           <small>Protocolo http:// ou https:// obrigatório</small>
+          <span
+            *ngIf="form.get('video')?.invalid && form.get('video')?.touched"
+            class="error-text"
+          >
+            Vídeo deve ser uma URL válida
+          </span>
         </div>
 
         <div class="form-actions">

@@ -1,7 +1,14 @@
+:host {
+  display: block;
+  position: relative;
+  z-index: 10;
+}
+
 /* ---------- Desktop header (exactly as commit b095572) ---------- */
 .header.desktop {
   width: 100vw;
   height: 200px;
+  position: relative;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
   background-color: #f7f0e9;
@@ -70,6 +77,7 @@
 .header.mobile {
   width: 100vw;
   max-width: 100%;
+  position: relative;
   overflow-x: hidden;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;

@@ -25,14 +25,19 @@
 
   .gallery {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 90px;
+    display: grid;
+    grid-template-columns: repeat(3, 333px);
+    justify-content: center;
+    column-gap: 90px;
+    row-gap: 56px;
     margin-top: 52px;
-    margin-bottom: 66px;
+    margin-bottom: 48px;
+
     .card {
       a {
         text-decoration: none;
+        display: block;
+
         h2 {
           color: #7c3e00;
           font-family: "Inter", sans-serif;
@@ -50,7 +55,126 @@
         width: 333px;
         height: 333px;
         border-radius: 42px;
+        object-fit: cover;
       }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 66px;
+  }
+
+  .pagination-page,
+  .pagination-arrow {
+    border: 0;
+    background: transparent;
+    color: #7c3e00;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+
+  .pagination-page {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .pagination-page.active {
+    background: #8a4600;
+    color: #fffdf8;
+  }
+
+  .pagination-arrow {
+    width: 24px;
+    height: 24px;
+    position: relative;
+  }
+
+  .pagination-arrow::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 4px;
+    left: 4px;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+  }
+
+  .pagination-arrow.previous::before {
+    transform: rotate(-135deg);
+  }
+
+  .pagination-arrow.next::before {
+    transform: rotate(45deg);
+  }
+
+  .pagination-arrow:disabled {
+    color: #ead8c4;
+    cursor: default;
+  }
+}
+
+@media (max-width: 1280px) {
+  .container {
+    padding-inline: 64px;
+
+    .gallery {
+      column-gap: 48px;
+    }
+  }
+}
+
+@media (max-width: 1120px) {
+  .container {
+    .gallery {
+      grid-template-columns: repeat(2, 333px);
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .container {
+    padding-inline: 24px;
+
+    .gallery {
+      grid-template-columns: minmax(0, 333px);
+    }
+
+    .pagination {
+      gap: 16px;
+    }
+
+    .pagination-page {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .container {
+    .gallery {
+      grid-template-columns: minmax(0, 1fr);
+
+      img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+      }
+    }
+
+    .pagination {
+      gap: 8px;
     }
   }
 }

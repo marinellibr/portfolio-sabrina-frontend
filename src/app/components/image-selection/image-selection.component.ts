@@ -3,8 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   inject,
 } from "@angular/core";
 import { ProjectPostImage } from "../../models/post.model";
@@ -21,12 +23,13 @@ import {
   templateUrl: "./image-selection.component.html",
   styleUrls: ["./image-selection.component.scss"],
 })
-export class ImageSelectionComponent implements OnInit {
+export class ImageSelectionComponent implements OnInit, OnChanges {
   private readonly githubProjectAssetsService = inject(
     GithubProjectAssetsService,
   );
 
   @Input() mult = false;
+  @Input() selectedImages: ProjectPostImage[] = [];
   @Output() selectedFilesChange = new EventEmitter<ProjectPostImage[]>();
 
   files: ProjectAsset[] = FALLBACK_PROJECT_ASSETS;
@@ -37,6 +40,12 @@ export class ImageSelectionComponent implements OnInit {
 
   ngOnInit(): void {
     void this.loadFiles();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["selectedImages"] && this.files.length) {
+      this.applySelectedImages();
+    }
   }
 
   get selectedFiles(): ProjectAsset[] {
@@ -99,7 +108,28 @@ export class ImageSelectionComponent implements OnInit {
       this.files = FALLBACK_PROJECT_ASSETS;
       console.error("Error loading project asset files:", error);
     } finally {
+      this.applySelectedImages();
       this.loadingFiles = false;
     }
+  }
+
+  private applySelectedImages(): void {
+    if (!this.selectedImages?.length) return;
+
+    const selectedFileNames = this.selectedImages
+      .map((image) => this.files.find((file) => file.url === image.url)?.name)
+      .filter((fileName): fileName is string => Boolean(fileName));
+
+    this.selectedFileNames = this.mult
+      ? selectedFileNames
+      : selectedFileNames.slice(0, 1);
+
+    this.coverFileNames = this.selectedImages
+      .filter((image) => image.cover)
+      .map((image) => this.files.find((file) => file.url === image.url)?.name)
+      .filter((fileName): fileName is string =>
+        Boolean(fileName && this.selectedFileNames.includes(fileName)),
+      )
+      .slice(0, 1);
   }
 }

@@ -12,14 +12,43 @@
   </div>
 
   <div class="gallery">
-    <div class="card" *ngFor="let project of projects; let i = index">
+    <div class="card" *ngFor="let project of paginatedProjects; let i = index">
       <a
         [routerLink]="['/project', project._id]"
         (click)="onProjectClick(project)"
       >
-        <img [src]="getCurrentImage(project, i)" />
-        <h2>{{ project.title }}</h2>
+        <img [src]="getCurrentImage(project, getProjectIndex(i))" />
+        <h2>{{ getProjectTitle(project) }}</h2>
       </a>
     </div>
   </div>
+
+  <nav class="pagination" *ngIf="totalPages > 1" aria-label="Paginação">
+    <button
+      type="button"
+      class="pagination-arrow previous"
+      aria-label="Página anterior"
+      [disabled]="currentPage === 1"
+      (click)="goToPreviousPage()"
+    ></button>
+
+    <button
+      type="button"
+      class="pagination-page"
+      *ngFor="let page of pages"
+      [class.active]="page === currentPage"
+      [attr.aria-current]="page === currentPage ? 'page' : null"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+
+    <button
+      type="button"
+      class="pagination-arrow next"
+      aria-label="Próxima página"
+      [disabled]="currentPage === totalPages"
+      (click)="goToNextPage()"
+    ></button>
+  </nav>
 </div>

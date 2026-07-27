@@ -20,6 +20,11 @@
     "CTA_CONTACT": "Entre em contato",
     "CTA_LINKEDIN": "LinkedIn"
   },
+  "PROJECT_DETAILS": {
+    "CATEGORIES": "Categorias",
+    "YEAR": "Ano",
+    "PROJECT_TYPE": "Tipo de projeto"
+  },
   "BUILDING": {
     "TITLE": "Que bom te ver, mas ainda estamos ajustando algumas coisas!",
     "SUBTITLE": "Por enquanto você pode conferir meu trabalho em:"
