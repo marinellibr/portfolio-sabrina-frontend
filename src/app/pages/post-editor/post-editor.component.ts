@@ -10,6 +10,7 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ImageSelectionComponent } from "../../components/image-selection/image-selection.component";
+import { TranslatePipe } from "@ngx-translate/core";
 import { ProjectPostImage } from "../../models/post.model";
 import { AuthService } from "../../services/auth.service";
 import { CreatePostRequest, PostService } from "../../services/post.service";
@@ -31,6 +32,7 @@ function isHttpUrl(value: string): boolean {
     ReactiveFormsModule,
     RouterLink,
     ImageSelectionComponent,
+    TranslatePipe,
   ],
   templateUrl: "./post-editor.component.html",
   styleUrls: ["./post-editor.component.scss"],

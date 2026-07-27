@@ -15,7 +15,9 @@
       {{ error() }}
     </div>
 
-    <div *ngIf="loadingPost()" class="loading-message">Carregando post...</div>
+    <div *ngIf="loadingPost()" class="loading-message">
+      {{ "LOADING.POST" | translate }}
+    </div>
 
     <div *ngIf="!loadingPost()" class="form-section">
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="post-form">

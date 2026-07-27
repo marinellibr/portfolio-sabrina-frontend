@@ -15,11 +15,12 @@ import {
   GithubProjectAssetsService,
   ProjectAsset,
 } from "../../services/github-project-assets.service";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: "app-image-selection",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: "./image-selection.component.html",
   styleUrls: ["./image-selection.component.scss"],
 })
@@ -81,9 +82,23 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
   }
 
   onCoverToggle(fileName: string, checked: boolean): void {
-    this.coverFileNames = checked
-      ? [...this.coverFileNames, fileName]
-      : this.coverFileNames.filter((coverFileName) => coverFileName !== fileName);
+    if (!this.mult) {
+      this.coverFileNames = checked ? [fileName] : [];
+      this.selectedFilesChange.emit(this.exportSelectedFiles());
+      return;
+    }
+
+    const coverFileNames = new Set(this.coverFileNames);
+
+    if (checked) {
+      coverFileNames.add(fileName);
+    } else {
+      coverFileNames.delete(fileName);
+    }
+
+    this.coverFileNames = Array.from(coverFileNames).filter((coverFileName) =>
+      this.selectedFileNames.includes(coverFileName),
+    );
     this.selectedFilesChange.emit(this.exportSelectedFiles());
   }
 
@@ -116,7 +131,11 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
   }
 
   private applySelectedImages(): void {
-    if (!this.selectedImages?.length) return;
+    if (!this.selectedImages?.length) {
+      this.selectedFileNames = [];
+      this.coverFileNames = [];
+      return;
+    }
 
     const selectedFileNames = this.selectedImages
       .map((image) => this.files.find((file) => file.url === image.url)?.name)
@@ -126,11 +145,15 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
       ? selectedFileNames
       : selectedFileNames.slice(0, 1);
 
-    this.coverFileNames = this.selectedImages
+    const coverFileNames = this.selectedImages
       .filter((image) => image.cover)
       .map((image) => this.files.find((file) => file.url === image.url)?.name)
       .filter((fileName): fileName is string =>
         Boolean(fileName && this.selectedFileNames.includes(fileName)),
       );
+
+    this.coverFileNames = this.mult
+      ? Array.from(new Set(coverFileNames))
+      : coverFileNames.slice(0, 1);
   }
 }

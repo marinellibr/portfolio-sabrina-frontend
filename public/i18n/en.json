@@ -27,6 +27,20 @@
     "YEAR": "Year",
     "PROJECT_TYPE": "Project type"
   },
+  "LOADING": {
+    "POST": "Loading post...",
+    "POSTS": "Loading posts...",
+    "PROJECTS": "Loading projects..."
+  },
+  "IMAGE_SELECTION": {
+    "PROJECT_FILES": "Project files",
+    "REFRESH": "Refresh",
+    "REFRESHING": "Refreshing...",
+    "LOADING_FILES": "Loading files...",
+    "USING_SAVED_LIST": "Using saved file list.",
+    "COVER": "Cover",
+    "EMPTY_PREVIEW": "Select a file to preview it here."
+  },
   "BUILDING": {
     "TITLE": "Great to have you here, but the site isn't ready yet!",
     "SUBTITLE": "In the meantime you can check out my work at:"

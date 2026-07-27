@@ -11,7 +11,9 @@
     <p>{{ "PROJECTS.SUBTITLE" | translate }}</p>
   </div>
 
-  <div *ngIf="loading" class="loading-message">Carregando projetos...</div>
+  <div *ngIf="loading" class="loading-message">
+    {{ "LOADING.PROJECTS" | translate }}
+  </div>
 
   <div class="gallery" *ngIf="!loading">
     <div class="card" *ngFor="let project of paginatedProjects; let i = index">

@@ -27,6 +27,20 @@
     "YEAR": "Ano",
     "PROJECT_TYPE": "Tipo de projeto"
   },
+  "LOADING": {
+    "POST": "Carregando post...",
+    "POSTS": "Carregando posts...",
+    "PROJECTS": "Carregando projetos..."
+  },
+  "IMAGE_SELECTION": {
+    "PROJECT_FILES": "Arquivos do projeto",
+    "REFRESH": "Atualizar",
+    "REFRESHING": "Atualizando...",
+    "LOADING_FILES": "Carregando arquivos...",
+    "USING_SAVED_LIST": "Usando lista de arquivos salva.",
+    "COVER": "Capa",
+    "EMPTY_PREVIEW": "Selecione um arquivo para visualizá-lo aqui."
+  },
   "BUILDING": {
     "TITLE": "Que bom te ver, mas ainda estamos ajustando algumas coisas!",
     "SUBTITLE": "Por enquanto você pode conferir meu trabalho em:"

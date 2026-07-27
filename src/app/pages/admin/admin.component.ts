@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
 import { Post, ProjectPostImage } from '../../models/post.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
