@@ -10,7 +10,9 @@
     "PROJECT": "Projeto",
     "ABOUT": "Sobre Mim",
     "CONTACT": "Contato",
-    "LOGIN": "Login"
+    "LOGIN": "Login",
+    "ADMIN": "Admin",
+    "POST_EDITOR": "Editor de Post"
   },
   "PROJECTS": {
     "BADGE": "em manutenção",

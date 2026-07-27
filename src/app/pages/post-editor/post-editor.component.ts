@@ -70,28 +70,32 @@ export class PostEditorComponent implements OnInit {
       year: ["", [Validators.required, Validators.maxLength(20)]],
       projectType: [""],
       projectTypeEn: [""],
-      button: this.fb.group({
-        label: ["", [Validators.required, Validators.maxLength(120)]],
-        link: [
-          "",
-          [
-            Validators.required,
-            Validators.maxLength(2000),
-            this.httpUrlValidator,
+      button: this.fb.group(
+        {
+          label: ["", [Validators.maxLength(120)]],
+          link: [
+            "",
+            [
+              Validators.maxLength(2000),
+              this.optionalHttpUrlValidator,
+            ],
           ],
-        ],
-      }),
-      buttonEn: this.fb.group({
-        label: ["", [Validators.required, Validators.maxLength(120)]],
-        link: [
-          "",
-          [
-            Validators.required,
-            Validators.maxLength(2000),
-            this.httpUrlValidator,
+        },
+        { validators: this.optionalButtonValidator },
+      ),
+      buttonEn: this.fb.group(
+        {
+          label: ["", [Validators.maxLength(120)]],
+          link: [
+            "",
+            [
+              Validators.maxLength(2000),
+              this.optionalHttpUrlValidator,
+            ],
           ],
-        ],
-      }),
+        },
+        { validators: this.optionalButtonValidator },
+      ),
     });
   }
 
@@ -141,7 +145,6 @@ export class PostEditorComponent implements OnInit {
       },
     });
   }
-
   onSubmit(): void {
     if (this.form.invalid) return;
 
@@ -247,6 +250,17 @@ export class PostEditorComponent implements OnInit {
     }
 
     return isHttpUrl(value) ? null : { url: true };
+  }
+
+  private optionalButtonValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const label = control.get("label")?.value?.trim();
+    const link = control.get("link")?.value?.trim();
+
+    if (!label && !link) return null;
+
+    return label && link ? null : { buttonPair: true };
   }
 
   private getPostImages(images: unknown): ProjectPostImage[] {
