@@ -23,6 +23,17 @@
     margin-top: 8px;
   }
 
+  .loading-message {
+    background-color: rgba(124, 62, 0, 0.1);
+    border: 1px solid rgba(124, 62, 0, 0.3);
+    border-radius: 16px;
+    color: #7c3e00;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    margin-top: 52px;
+    padding: 14px 24px;
+  }
+
   .gallery {
     width: 100%;
     display: grid;

@@ -19,6 +19,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   readonly itemsPerPage = 6;
   projects: PostSummary[] = [];
   currentPage = 1;
+  loading = true;
   private imageIndices: Map<number, number> = new Map();
   private intervalId: any;
 
@@ -27,6 +28,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       next: (summary) => {
         console.log("Posts summary:", summary);
         this.projects = summary;
+        this.loading = false;
         // Inicializar índices para cada projeto
         this.projects.forEach((_, index) => {
           this.imageIndices.set(index, 0);
@@ -34,7 +36,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         // Iniciar rotação de imagens
         this.startImageRotation();
       },
-      error: (err) => console.error("Erro ao buscar posts summary:", err),
+      error: (err) => {
+        this.loading = false;
+        console.error("Erro ao buscar posts summary:", err);
+      },
     });
   }
 

@@ -81,7 +81,9 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
   }
 
   onCoverToggle(fileName: string, checked: boolean): void {
-    this.coverFileNames = checked ? [fileName] : [];
+    this.coverFileNames = checked
+      ? [...this.coverFileNames, fileName]
+      : this.coverFileNames.filter((coverFileName) => coverFileName !== fileName);
     this.selectedFilesChange.emit(this.exportSelectedFiles());
   }
 
@@ -129,7 +131,6 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
       .map((image) => this.files.find((file) => file.url === image.url)?.name)
       .filter((fileName): fileName is string =>
         Boolean(fileName && this.selectedFileNames.includes(fileName)),
-      )
-      .slice(0, 1);
+      );
   }
 }
