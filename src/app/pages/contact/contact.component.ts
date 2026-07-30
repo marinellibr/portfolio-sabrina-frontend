@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { CurriculumService } from "../../services/curriculum.service";
 
 @Component({
   selector: "app-contact",
@@ -12,7 +13,10 @@ export class ContactComponent {
   rawUrl =
     "https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/8515e4debbfd5e4afeb106becac78dcdb0ca52f7/images/";
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    private translateService: TranslateService,
+    private curriculumService: CurriculumService,
+  ) {}
 
   contacts: any[] = [
     {
@@ -64,7 +68,7 @@ export class ContactComponent {
         );
         break;
       case "work":
-        console.log("CV clicado");
+        this.curriculumService.open();
         break;
       case "linkedin":
       case "behance":
