@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { RouterLink, RouterLinkActive, Router } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import { SwitchComponent } from "../switch/switch.component";
 import { CommonModule } from "@angular/common";
@@ -15,11 +15,6 @@ import { LanguageService } from "../../services/language.service";
 })
 export class HeaderComponent {
   private readonly languageService = inject(LanguageService);
-  private readonly router = inject(Router);
-
-  get isHome(): boolean {
-    return this.router.url === "/" || this.router.url === "";
-  }
 
   get lang(): boolean {
     return this.languageService.current === "en";

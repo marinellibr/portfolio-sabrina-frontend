@@ -132,6 +132,10 @@
     color: #ead8c4;
     cursor: default;
   }
+
+  .gallery-dots {
+    display: none;
+  }
 }
 
 @media (max-width: 1280px) {
@@ -157,11 +161,39 @@
     padding-inline: 24px;
 
     .gallery {
-      grid-template-columns: minmax(0, 333px);
+      display: flex;
+      justify-content: flex-start;
+      gap: 24px;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 0;
+      -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .card {
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+
+        a {
+          width: 100%;
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 1;
+        }
+      }
     }
 
     .pagination {
-      gap: 16px;
+      gap: 20px;
     }
 
     .pagination-page {
@@ -169,23 +201,41 @@
       height: 40px;
       font-size: 16px;
     }
+
+    .pagination-page.active {
+      background: #8a4600;
+      color: #fffdf8;
+    }
+
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: -28px;
+      margin-bottom: 32px;
+    }
+
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #ead8c4;
+      cursor: pointer;
+    }
+
+    .gallery-dot.active {
+      background: #7c3e00;
+    }
   }
 }
 
 @media (max-width: 420px) {
   .container {
-    .gallery {
-      grid-template-columns: minmax(0, 1fr);
-
-      img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-      }
-    }
-
     .pagination {
-      gap: 8px;
+      gap: 14px;
     }
   }
 }

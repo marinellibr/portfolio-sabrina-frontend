@@ -4,21 +4,6 @@
   </section>
 
   <section class="project-cards">
-    <article class="project-card project-card-main">
-      <h1>{{ getProjectTitle(project) }}</h1>
-      <p class="project-description">{{ getProjectDescription(project) }}</p>
-
-      <a
-        *ngIf="getProjectButton(project) as button"
-        class="project-button"
-        [href]="button.link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ button.label }}
-      </a>
-    </article>
-
     <aside class="project-card project-card-side">
       <div class="metadata-group" *ngIf="getProjectCategories(project).length">
         <h2>{{ "PROJECT_DETAILS.CATEGORIES" | translate }}</h2>
@@ -51,6 +36,21 @@
         </div>
       </div>
     </aside>
+
+    <article class="project-card project-card-main">
+      <h1>{{ getProjectTitle(project) }}</h1>
+      <p class="project-description">{{ getProjectDescription(project) }}</p>
+
+      <a
+        *ngIf="getProjectButton(project) as button"
+        class="project-button"
+        [href]="button.link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ button.label }}
+      </a>
+    </article>
   </section>
 
   <section class="project-images" *ngIf="getProjectImages(project).length">

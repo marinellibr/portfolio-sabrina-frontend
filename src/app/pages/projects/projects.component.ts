@@ -19,6 +19,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   readonly itemsPerPage = 6;
   projects: PostSummary[] = [];
   currentPage = 1;
+  activeGalleryIndex = 0;
   loading = true;
   private imageIndices: Map<number, number> = new Map();
   private intervalId: any;
@@ -103,6 +104,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     this.currentPage = page;
+    this.activeGalleryIndex = 0;
   }
 
   goToPreviousPage(): void {
@@ -111,6 +113,48 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   goToNextPage(): void {
     this.goToPage(this.currentPage + 1);
+  }
+
+  onGalleryScroll(event: Event): void {
+    const gallery = event.target as HTMLElement;
+    const cards = Array.from(gallery.querySelectorAll<HTMLElement>(".card"));
+
+    if (!cards.length) {
+      return;
+    }
+
+    const galleryCenter = gallery.getBoundingClientRect().left + gallery.clientWidth / 2;
+    const closestIndex = cards.reduce((closest, card, index) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(galleryCenter - cardCenter);
+
+      return distance < closest.distance ? { index, distance } : closest;
+    }, { index: 0, distance: Number.POSITIVE_INFINITY });
+
+    this.activeGalleryIndex = closestIndex.index;
+  }
+
+  scrollToGalleryItem(index: number, gallery: HTMLElement): void {
+    const card = gallery.querySelectorAll<HTMLElement>(".card")[index];
+
+    if (!card) {
+      return;
+    }
+
+    const galleryRect = gallery.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const targetLeft =
+      gallery.scrollLeft +
+      cardRect.left -
+      galleryRect.left -
+      (gallery.clientWidth - card.offsetWidth) / 2;
+
+    gallery.scrollTo({
+      left: targetLeft,
+      behavior: "smooth",
+    });
+    this.activeGalleryIndex = index;
   }
 
   private getProjectImageUrls(project: PostSummary): string[] {

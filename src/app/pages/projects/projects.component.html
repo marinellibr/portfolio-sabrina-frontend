@@ -15,17 +15,31 @@
     {{ "LOADING.PROJECTS" | translate }}
   </div>
 
-  <div class="gallery" *ngIf="!loading">
-    <div class="card" *ngFor="let project of paginatedProjects; let i = index">
-      <a
-        [routerLink]="['/project', project._id]"
-        (click)="onProjectClick(project)"
-      >
-        <img [src]="getCurrentImage(project, getProjectIndex(i))" />
-        <h2 style="text-align: center">{{ getProjectTitle(project) }}</h2>
-      </a>
+  <ng-container *ngIf="!loading">
+    <div class="gallery" #gallery (scroll)="onGalleryScroll($event)">
+      <div class="card" *ngFor="let project of paginatedProjects; let i = index">
+        <a
+          [routerLink]="['/project', project._id]"
+          (click)="onProjectClick(project)"
+        >
+          <img [src]="getCurrentImage(project, getProjectIndex(i))" />
+          <h2 style="text-align: center">{{ getProjectTitle(project) }}</h2>
+        </a>
+      </div>
     </div>
-  </div>
+
+    <div class="gallery-dots" *ngIf="paginatedProjects.length > 1">
+      <button
+        type="button"
+        class="gallery-dot"
+        *ngFor="let project of paginatedProjects; let i = index"
+        [class.active]="i === activeGalleryIndex"
+        [attr.aria-label]="'Ir para imagem ' + (i + 1)"
+        [attr.aria-current]="i === activeGalleryIndex ? 'true' : null"
+        (click)="scrollToGalleryItem(i, gallery)"
+      ></button>
+    </div>
+  </ng-container>
 
   <nav class="pagination" *ngIf="totalPages > 1" aria-label="Paginação">
     <button
