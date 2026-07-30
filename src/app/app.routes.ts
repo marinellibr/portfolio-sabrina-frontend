@@ -4,13 +4,8 @@ import { authGuard } from "./guards/auth.guard";
 export const routes: Routes = [
   {
     path: "",
-    loadComponent: () => import("./pages/building/building.component").then((m) => m.BuildingComponent),
-    data: { titleKey: "TITLES.HOME" },
-  },
-  {
-    path: "building",
-    loadComponent: () => import("./pages/building/building.component").then((m) => m.BuildingComponent),
-    data: { titleKey: "TITLES.HOME" },
+    redirectTo: "projects",
+    pathMatch: "full",
   },
   {
     path: "projects",
