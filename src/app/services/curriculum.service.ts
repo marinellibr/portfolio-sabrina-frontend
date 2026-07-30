@@ -23,19 +23,30 @@ export class CurriculumService {
 
   async open(): Promise<void> {
     const curriculum = this.files[this.languageService.current];
-    const response = await fetch(curriculum.url);
+    const targetWindow = window.open("", "_blank");
 
-    if (!response.ok) {
+    if (!targetWindow) {
       window.open(curriculum.url, "_blank");
       return;
     }
 
-    const blob = await response.blob();
-    const pdfBlob = new Blob([blob], { type: "application/pdf" });
-    const blobUrl = URL.createObjectURL(pdfBlob);
+    try {
+      const response = await fetch(curriculum.url);
 
-    window.open(blobUrl, "_blank");
+      if (!response.ok) {
+        targetWindow.location.href = curriculum.url;
+        return;
+      }
 
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+      const blob = await response.blob();
+      const pdfBlob = new Blob([blob], { type: "application/pdf" });
+      const blobUrl = URL.createObjectURL(pdfBlob);
+
+      targetWindow.location.href = blobUrl;
+
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+    } catch {
+      targetWindow.location.href = curriculum.url;
+    }
   }
 }
