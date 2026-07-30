@@ -34,8 +34,10 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
   @Output() selectedFilesChange = new EventEmitter<ProjectPostImage[]>();
 
   files: ProjectAsset[] = FALLBACK_PROJECT_ASSETS;
-  selectedFileNames: string[] = [];
-  coverFileNames: string[] = [];
+  currentPath = "";
+  selectedFileUrls: string[] = [];
+  coverFileUrls: string[] = [];
+  selectedAssets = new Map<string, ProjectAsset>();
   loadingFiles = true;
   fileLoadError = false;
 
@@ -45,115 +47,181 @@ export class ImageSelectionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["selectedImages"] && this.files.length) {
-      this.applySelectedImages();
+      this.syncSelectedImagesFromInput();
     }
   }
 
   get selectedFiles(): ProjectAsset[] {
-    return this.files.filter((file) =>
-      this.selectedFileNames.includes(file.name),
-    );
+    return this.selectedFileUrls
+      .map((url) => this.selectedAssets.get(url))
+      .filter((file): file is ProjectAsset => Boolean(file));
   }
 
-  isSelected(fileName: string): boolean {
-    return this.selectedFileNames.includes(fileName);
+  get pathSegments(): string[] {
+    return this.currentPath ? this.currentPath.split("/") : [];
   }
 
-  isCoverSelected(fileName: string): boolean {
-    return this.coverFileNames.includes(fileName);
+  get currentFolderName(): string {
+    return this.pathSegments[this.pathSegments.length - 1] ?? "";
   }
 
-  onToggle(fileName: string, checked: boolean): void {
-    if (this.mult) {
-      this.selectedFileNames = checked
-        ? [...this.selectedFileNames, fileName]
-        : this.selectedFileNames.filter(
-            (selectedFileName) => selectedFileName !== fileName,
-          );
-    } else {
-      this.selectedFileNames = checked ? [fileName] : [];
+  isSelected(file: ProjectAsset): boolean {
+    return Boolean(file.url && this.selectedFileUrls.includes(file.url));
+  }
+
+  isCoverSelected(file: ProjectAsset): boolean {
+    return Boolean(file.url && this.coverFileUrls.includes(file.url));
+  }
+
+  onToggle(file: ProjectAsset, checked: boolean): void {
+    if (!file.url) {
+      return;
     }
 
-    this.coverFileNames = this.coverFileNames.filter((coverFileName) =>
-      this.selectedFileNames.includes(coverFileName),
+    if (this.mult) {
+      this.selectedFileUrls = checked
+        ? Array.from(new Set([...this.selectedFileUrls, file.url]))
+        : this.selectedFileUrls.filter(
+            (selectedFileUrl) => selectedFileUrl !== file.url,
+          );
+    } else {
+      this.selectedFileUrls = checked ? [file.url] : [];
+    }
+
+    if (checked) {
+      this.selectedAssets.set(file.url, file);
+    } else {
+      this.selectedAssets.delete(file.url);
+    }
+
+    this.coverFileUrls = this.coverFileUrls.filter((coverFileUrl) =>
+      this.selectedFileUrls.includes(coverFileUrl),
     );
 
     this.selectedFilesChange.emit(this.exportSelectedFiles());
   }
 
-  onCoverToggle(fileName: string, checked: boolean): void {
+  onCoverToggle(file: ProjectAsset, checked: boolean): void {
+    if (!file.url) {
+      return;
+    }
+
     if (!this.mult) {
-      this.coverFileNames = checked ? [fileName] : [];
+      this.coverFileUrls = checked ? [file.url] : [];
       this.selectedFilesChange.emit(this.exportSelectedFiles());
       return;
     }
 
-    const coverFileNames = new Set(this.coverFileNames);
+    const coverFileUrls = new Set(this.coverFileUrls);
 
     if (checked) {
-      coverFileNames.add(fileName);
+      coverFileUrls.add(file.url);
     } else {
-      coverFileNames.delete(fileName);
+      coverFileUrls.delete(file.url);
     }
 
-    this.coverFileNames = Array.from(coverFileNames).filter((coverFileName) =>
-      this.selectedFileNames.includes(coverFileName),
+    this.coverFileUrls = Array.from(coverFileUrls).filter((coverFileUrl) =>
+      this.selectedFileUrls.includes(coverFileUrl),
     );
     this.selectedFilesChange.emit(this.exportSelectedFiles());
   }
 
   exportSelectedFiles(): ProjectPostImage[] {
     return this.selectedFiles.map((file) => ({
-      url: file.url,
-      cover: this.isCoverSelected(file.name),
+      url: file.url as string,
+      cover: this.isCoverSelected(file),
     }));
   }
 
   refreshFiles(): void {
-    void this.loadFiles(true);
+    void this.loadFiles(this.currentPath, true);
   }
 
-  private async loadFiles(forceRefresh = false): Promise<void> {
+  openFolder(file: ProjectAsset): void {
+    if (file.type !== "dir") {
+      return;
+    }
+
+    void this.loadFiles(file.path);
+  }
+
+  goBack(): void {
+    if (!this.currentPath) {
+      return;
+    }
+
+    const parentPath = this.pathSegments.slice(0, -1).join("/");
+    void this.loadFiles(parentPath);
+  }
+
+  private async loadFiles(path = this.currentPath, forceRefresh = false): Promise<void> {
     this.loadingFiles = true;
     this.fileLoadError = false;
 
     try {
       this.files =
-        await this.githubProjectAssetsService.getAssets(forceRefresh);
+        await this.githubProjectAssetsService.getAssets(path, forceRefresh);
+      this.currentPath = path;
     } catch (error) {
       this.fileLoadError = true;
       this.files = FALLBACK_PROJECT_ASSETS;
+      this.currentPath = "";
       console.error("Error loading project asset files:", error);
     } finally {
-      this.applySelectedImages();
+      this.cacheVisibleSelectedFiles();
       this.loadingFiles = false;
     }
   }
 
-  private applySelectedImages(): void {
+  private syncSelectedImagesFromInput(): void {
     if (!this.selectedImages?.length) {
-      this.selectedFileNames = [];
-      this.coverFileNames = [];
+      this.selectedFileUrls = [];
+      this.coverFileUrls = [];
+      this.selectedAssets.clear();
       return;
     }
 
-    const selectedFileNames = this.selectedImages
-      .map((image) => this.files.find((file) => file.url === image.url)?.name)
-      .filter((fileName): fileName is string => Boolean(fileName));
+    this.selectedImages.forEach((image) => {
+      if (!this.selectedAssets.has(image.url)) {
+        this.selectedAssets.set(image.url, {
+          name: image.url.split("/").pop() ?? image.url,
+          path: image.url,
+          type: "file",
+          url: image.url,
+        });
+      }
+    });
 
-    this.selectedFileNames = this.mult
-      ? selectedFileNames
-      : selectedFileNames.slice(0, 1);
+    const selectedFileUrls = this.selectedImages.map((image) => image.url);
 
-    const coverFileNames = this.selectedImages
+    this.selectedFileUrls = this.mult
+      ? Array.from(new Set(selectedFileUrls))
+      : selectedFileUrls.slice(0, 1);
+
+    const coverFileUrls = this.selectedImages
       .filter((image) => image.cover)
-      .map((image) => this.files.find((file) => file.url === image.url)?.name)
-      .filter((fileName): fileName is string =>
-        Boolean(fileName && this.selectedFileNames.includes(fileName)),
+      .map((image) => image.url)
+      .filter((fileUrl) =>
+        this.selectedFileUrls.includes(fileUrl),
       );
 
-    this.coverFileNames = this.mult
-      ? Array.from(new Set(coverFileNames))
-      : coverFileNames.slice(0, 1);
+    this.coverFileUrls = this.mult
+      ? Array.from(new Set(coverFileUrls))
+      : coverFileUrls.slice(0, 1);
+
+    this.cacheVisibleSelectedFiles();
+  }
+
+  private cacheVisibleSelectedFiles(): void {
+    this.files
+      .filter(
+        (file) =>
+          file.type === "file" &&
+          file.url &&
+          this.selectedFileUrls.includes(file.url),
+      )
+      .forEach((file) => {
+        this.selectedAssets.set(file.url as string, file);
+      });
   }
 }

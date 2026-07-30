@@ -2,13 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
+export type ProjectAssetType = 'file' | 'dir';
+
 export type ProjectAsset = {
   name: string;
-  url: string;
+  path: string;
+  type: ProjectAssetType;
+  url: string | null;
 };
 
 type GithubContentItem = {
   name: string;
+  path: string;
   download_url: string | null;
   type: string;
 };
@@ -16,11 +21,13 @@ type GithubContentItem = {
 const ASSET_BASE_URL =
   'https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/project-assets';
 const ASSET_API_URL =
-  'https://api.github.com/repos/marinellibr/portfolio-sabrina-resources/contents/project-assets?ref=main';
+  'https://api.github.com/repos/marinellibr/portfolio-sabrina-resources/contents/project-assets';
 
 export const FALLBACK_PROJECT_ASSETS: ProjectAsset[] = [
   {
     name: 'banner-creamy.png',
+    path: 'banner-creamy.png',
+    type: 'file',
     url: `${ASSET_BASE_URL}/banner-creamy.png`,
   },
 ];
@@ -28,42 +35,59 @@ export const FALLBACK_PROJECT_ASSETS: ProjectAsset[] = [
 @Injectable({ providedIn: 'root' })
 export class GithubProjectAssetsService {
   private readonly http = inject(HttpClient);
-  private cachedAssets: ProjectAsset[] | null = null;
-  private pendingRequest: Promise<ProjectAsset[]> | null = null;
+  private cachedAssets = new Map<string, ProjectAsset[]>();
+  private pendingRequests = new Map<string, Promise<ProjectAsset[]>>();
 
-  getAssets(forceRefresh = false): Promise<ProjectAsset[]> {
-    if (!forceRefresh && this.cachedAssets) {
-      return Promise.resolve(this.cachedAssets);
+  getAssets(path = '', forceRefresh = false): Promise<ProjectAsset[]> {
+    if (!forceRefresh && this.cachedAssets.has(path)) {
+      return Promise.resolve(this.cachedAssets.get(path) as ProjectAsset[]);
     }
 
-    if (!forceRefresh && this.pendingRequest) {
-      return this.pendingRequest;
+    if (!forceRefresh && this.pendingRequests.has(path)) {
+      return this.pendingRequests.get(path) as Promise<ProjectAsset[]>;
     }
 
-    this.pendingRequest = this.fetchAssets()
+    const request = this.fetchAssets(path)
       .then((assets) => {
-        this.cachedAssets = assets.length ? assets : FALLBACK_PROJECT_ASSETS;
-        return this.cachedAssets;
+        const resolvedAssets = assets.length && !path ? assets : assets;
+        this.cachedAssets.set(
+          path,
+          resolvedAssets.length || path ? resolvedAssets : FALLBACK_PROJECT_ASSETS,
+        );
+        return this.cachedAssets.get(path) as ProjectAsset[];
       })
       .finally(() => {
-        this.pendingRequest = null;
+        this.pendingRequests.delete(path);
       });
 
-    return this.pendingRequest;
+    this.pendingRequests.set(path, request);
+    return request;
   }
 
   clearCache(): void {
-    this.cachedAssets = null;
+    this.cachedAssets.clear();
   }
 
-  private async fetchAssets(): Promise<ProjectAsset[]> {
-    const items = await firstValueFrom(this.http.get<GithubContentItem[]>(ASSET_API_URL));
+  private async fetchAssets(path: string): Promise<ProjectAsset[]> {
+    const requestPath = path
+      ? `${ASSET_API_URL}/${encodeURIComponent(path).replace(/%2F/g, '/')}?ref=main`
+      : `${ASSET_API_URL}?ref=main`;
+    const items = await firstValueFrom(this.http.get<GithubContentItem[]>(requestPath));
 
     return items
-      .filter((item) => item.type === 'file' && item.download_url)
+      .filter((item) => item.type === 'file' || item.type === 'dir')
       .map((item) => ({
         name: item.name,
-        url: item.download_url as string,
-      }));
+        path: item.path.replace(/^project-assets\/?/, ''),
+        type: (item.type === 'dir' ? 'dir' : 'file') as ProjectAssetType,
+        url: item.download_url,
+      }))
+      .sort((first, second) => {
+        if (first.type !== second.type) {
+          return first.type === 'dir' ? -1 : 1;
+        }
+
+        return first.name.localeCompare(second.name);
+      });
   }
 }

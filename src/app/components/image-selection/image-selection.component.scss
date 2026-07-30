@@ -67,6 +67,7 @@ $red: #e42312;
   gap: 12px;
 }
 
+.folder-main-option,
 .file-main-option {
   display: flex;
   align-items: center;
@@ -77,6 +78,41 @@ $red: #e42312;
   font-size: 16px;
   line-height: 1.4;
   cursor: pointer;
+}
+
+.folder-main-option {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+}
+
+.folder-main-option {
+  width: 100%;
+
+  &:hover span:last-child,
+  &:focus-visible span:last-child {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.folder-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(124, 62, 0, 0.32);
+  border-radius: 6px;
+  background-color: #fffaf6;
+  color: $red;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.file-main-option {
 
   input {
     width: 18px;
@@ -89,6 +125,10 @@ $red: #e42312;
   span {
     overflow-wrap: anywhere;
   }
+}
+
+.folder-option {
+  justify-content: flex-start;
 }
 
 .file-option:hover .cover-option,

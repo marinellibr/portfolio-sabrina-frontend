@@ -1,7 +1,9 @@
 <section class="image-selection">
   <div class="file-list" aria-label="Project asset files">
     <div class="file-list-header">
-      <span>{{ "IMAGE_SELECTION.PROJECT_FILES" | translate }}</span>
+      <span>
+        {{ currentFolderName || ("IMAGE_SELECTION.PROJECT_FILES" | translate) }}
+      </span>
       <button type="button" class="refresh-button" [disabled]="loadingFiles" (click)="refreshFiles()">
         {{
           loadingFiles
@@ -18,25 +20,49 @@
       {{ "IMAGE_SELECTION.USING_SAVED_LIST" | translate }}
     </p>
 
-    <div *ngFor="let file of files" class="file-option">
+    <div *ngIf="currentPath" class="file-option folder-option">
+      <button
+        type="button"
+        class="folder-main-option"
+        aria-label="Voltar para a pasta anterior"
+        (click)="goBack()"
+      >
+        <span class="folder-icon" aria-hidden="true">/</span>
+        <span>..</span>
+      </button>
+    </div>
+
+    <div *ngFor="let file of files" class="file-option" [class.folder-option]="file.type === 'dir'">
+      <button
+        *ngIf="file.type === 'dir'; else fileOption"
+        type="button"
+        class="folder-main-option"
+        (click)="openFolder(file)"
+      >
+        <span class="folder-icon" aria-hidden="true">/</span>
+        <span>{{ file.name }}</span>
+      </button>
+
+      <ng-template #fileOption>
       <label class="file-main-option">
         <input
           type="checkbox"
-          [checked]="isSelected(file.name)"
-          (change)="onToggle(file.name, $any($event.target).checked)"
+          [checked]="isSelected(file)"
+          (change)="onToggle(file, $any($event.target).checked)"
         />
         <span>{{ file.name }}</span>
       </label>
+      </ng-template>
 
       <label
-        *ngIf="isSelected(file.name)"
+        *ngIf="file.type === 'file' && isSelected(file)"
         class="cover-option"
-        [class.visible]="isCoverSelected(file.name)"
+        [class.visible]="isCoverSelected(file)"
       >
         <input
           type="checkbox"
-          [checked]="isCoverSelected(file.name)"
-          (change)="onCoverToggle(file.name, $any($event.target).checked)"
+          [checked]="isCoverSelected(file)"
+          (change)="onCoverToggle(file, $any($event.target).checked)"
         />
         <span>{{ "IMAGE_SELECTION.COVER" | translate }}</span>
       </label>
