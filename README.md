@@ -1,7 +1,12 @@
 # Portfolio Sabrina — Frontend
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/refs/heads/main/images/header-logo.png" alt="Portfolio Sabrina" />
+  <a href="https://sabrinacardoso.com" target="_blank">
+    <img
+      src="https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/refs/heads/main/images/header-logo.png"
+      alt="Portfolio Sabrina"
+    />
+  </a>
 </p>
 
 <p align="center">
