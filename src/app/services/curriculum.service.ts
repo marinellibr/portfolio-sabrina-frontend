@@ -23,6 +23,12 @@ export class CurriculumService {
 
   async open(): Promise<void> {
     const curriculum = this.files[this.languageService.current];
+
+    if (this.isLinkedInInAppBrowser()) {
+      window.open(curriculum.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     const targetWindow = window.open("", "_blank");
 
     if (!targetWindow) {
@@ -48,5 +54,13 @@ export class CurriculumService {
     } catch {
       targetWindow.location.href = curriculum.url;
     }
+  }
+
+  private isLinkedInInAppBrowser(): boolean {
+    if (typeof navigator === "undefined") {
+      return false;
+    }
+
+    return /LinkedInApp|LinkedIn/i.test(navigator.userAgent);
   }
 }
