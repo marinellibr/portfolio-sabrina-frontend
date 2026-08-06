@@ -3,6 +3,7 @@ import { LanguageService } from "./language.service";
 
 type CurriculumFile = {
   fileName: string;
+  inlineUrl: string;
   url: string;
 };
 
@@ -13,10 +14,12 @@ export class CurriculumService {
   private readonly files: Record<"pt" | "en", CurriculumFile> = {
     pt: {
       fileName: "cv_sabrina_cardoso.pdf",
+      inlineUrl: "https://portfolio-sabrina-backend.vercel.app/v1/curriculum/pt",
       url: "https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/docs/cv_sabrina_cardoso.pdf",
     },
     en: {
       fileName: "sabrina_cardoso_cv.pdf",
+      inlineUrl: "https://portfolio-sabrina-backend.vercel.app/v1/curriculum/en",
       url: "https://raw.githubusercontent.com/marinellibr/portfolio-sabrina-resources/main/docs/sabrina_cardoso_cv.pdf",
     },
   };
@@ -25,7 +28,7 @@ export class CurriculumService {
     const curriculum = this.files[this.languageService.current];
 
     if (this.isLinkedInInAppBrowser()) {
-      window.open(curriculum.url, "_blank", "noopener,noreferrer");
+      window.open(curriculum.inlineUrl, "_blank", "noopener,noreferrer");
       return;
     }
 
